@@ -1,0 +1,167 @@
+[
+	{
+	  "Username": "petros",
+	  "FirstName": "Πέτρος",
+	  "LastName": "Πέτρου",
+	  "Afm": "218692200",
+	  "AddressStreet": "Κηφισίας",
+	  "AddressNumber": "1",
+	  "PostalCode": "11523",
+	  "City": "Αθήνα",
+	  "AnnualIncome": 18000.00
+	},
+	{
+	  "Username": "nikos",
+	  "FirstName": "Νίκος",
+	  "LastName": "Νικολάου",
+	  "Afm": "932247530",
+	  "AddressStreet": "Κηφισίας",
+	  "AddressNumber": "2",
+	  "PostalCode": "11523",
+	  "City": "Αθήνα",
+	  "AnnualIncome": 18000.00
+	},
+	{
+	  "Username": "antonis",
+	  "FirstName": "Αντώνης",
+	  "LastName": "Αντωνίου",
+	  "Afm": "628314533",
+	  "AddressStreet": "Κηφισίας",
+	  "AddressNumber": "3",
+	  "PostalCode": "11523",
+	  "City": "Αθήνα",
+	  "AnnualIncome": 18000.00
+	},
+	{
+	  "Username": "georgia",
+	  "FirstName": "Γεωργία",
+	  "LastName": "Γεωργίου",
+	  "Afm": "917740680",
+	  "AddressStreet": "Κηφισίας",
+	  "AddressNumber": "4",
+	  "PostalCode": "11523",
+	  "City": "Αθήνα",
+	  "AnnualIncome": 18000.00
+	},
+	{
+	  "Username": "dimitra",
+	  "FirstName": "Δήμητρα",
+	  "LastName": "Δημητρίου",
+	  "Afm": "296518082",
+	  "AddressStreet": "Κηφισίας",
+	  "AddressNumber": "5",
+	  "PostalCode": "11523",
+	  "City": "Αθήνα",
+	  "AnnualIncome": 11000.00
+	},
+	{
+	  "Username": "thodoris",
+	  "FirstName": "Θεόδωρος",
+	  "LastName": "Θεοδώρου",
+	  "Afm": "308187850",
+	  "AddressStreet": "Τσιμισκή",
+	  "AddressNumber": "1",
+	  "PostalCode": "54625",
+	  "City": "Θεσσαλονίκη",
+	  "AnnualIncome": 11000.00
+	},
+	{
+	  "Username": "stratos",
+	  "FirstName": "Ευστράτιος",
+	  "LastName": "Ευστρατίου",
+	  "Afm": "728481447",
+	  "AddressStreet": "Τσιμισκή",
+	  "AddressNumber": "2",
+	  "PostalCode": "54625",
+	  "City": "Θεσσαλονίκη",
+	  "AnnualIncome": 11000.00
+	},
+	{
+	  "Username": "vasilis",
+	  "FirstName": "Βασίλης",
+	  "LastName": "Βασιλείου",
+	  "Afm": "797783145",
+	  "AddressStreet": "Τσιμισκή",
+	  "AddressNumber": "3",
+	  "PostalCode": "54625",
+	  "City": "Θεσσαλονίκη",
+	  "AnnualIncome": 11000.00
+	},
+	{
+	  "Username": "ioanna",
+	  "FirstName": "Ιωάννα",
+	  "LastName": "Ιωάννου",
+	  "Afm": "427656954",
+	  "AddressStreet": "Τσιμισκή",
+	  "AddressNumber": "4",
+	  "PostalCode": "54625",
+	  "City": "Θεσσαλονίκη",
+	  "AnnualIncome": 14000.00
+	},
+	{
+	  "Username": "aggeliki",
+	  "FirstName": "Αγγελική",
+	  "LastName": "Αγγελοπούλου",
+	  "Afm": "848457691",
+	  "AddressStreet": "Τσιμισκή",
+	  "AddressNumber": "5",
+	  "PostalCode": "54625",
+	  "City": "Θεσσαλονίκη",
+	  "AnnualIncome": 14000.00
+	},
+	{
+	  "Username": "giannis",
+	  "FirstName": "Ιωάννης",
+	  "LastName": "Ιωάννου",
+	  "Afm": "710792222",
+	  "AddressStreet": "Γεροκωστοπούλου",
+	  "AddressNumber": "1",
+	  "PostalCode": "26221",
+	  "City": "Αθήνα",
+	  "AnnualIncome": 14000.00
+	},
+	{
+	  "Username": "markos",
+	  "FirstName": "Μάρκος",
+	  "LastName": "Μάρκου",
+	  "Afm": "155191864",
+	  "AddressStreet": "Γεροκωστοπούλου",
+	  "AddressNumber": "2",
+	  "PostalCode": "26221",
+	  "City": "Αθήνα",
+	  "AnnualIncome": 14000.00
+	},
+	{
+	  "Username": "eva",
+	  "FirstName": "Ευαγγελία",
+	  "LastName": "Βαγγελοπούλου",
+	  "Afm": "159128299",
+	  "AddressStreet": "Γεροκωστοπούλου",
+	  "AddressNumber": "3",
+	  "PostalCode": "26221",
+	  "City": "Αθήνα",
+	  "AnnualIncome": 22000.00
+	},
+	{
+	  "Username": "eleni",
+	  "FirstName": "Ελένη",
+	  "LastName": "Ελενοπούλου",
+	  "Afm": "964976563",
+	  "AddressStreet": "Γεροκωστοπούλου",
+	  "AddressNumber": "4",
+	  "PostalCode": "26221",
+	  "City": "Αθήνα",
+	  "AnnualIncome": 22000.00
+	},
+	{
+	  "Username": "stella",
+	  "FirstName": "Στέλλα",
+	  "LastName": "Στυλιανού",
+	  "Afm": "904236877",
+	  "AddressStreet": "Γεροκωστοπούλου",
+	  "AddressNumber": "6",
+	  "PostalCode": "26221",
+	  "City": "Αθήνα",
+	  "AnnualIncome": 22000.00
+	}
+]
