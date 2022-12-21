@@ -1,0 +1,26 @@
+.background {
+    background-color: lightgray;
+}
+
+.wrapper {
+    width: 540px;
+    margin: 30px auto;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px -3px #000;
+    padding: 0px;
+}
+
+.card {
+    padding: 0px;
+}
+
+.card-body {
+    padding: 0px;
+}
+
+.form-style {
+    width: 50%;
+    text-align: center;
+    margin: auto;
+}

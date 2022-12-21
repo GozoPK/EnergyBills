@@ -1,0 +1,84 @@
+<div class="container py-5">
+
+    <div class="mb-4">
+        <h4 class="text-primary">Εγγραφή στην πλατφόρμα</h4>
+    </div>
+
+    <hr>
+
+    <div class="row mt-4 pb-5">
+        <div class="col-md-8 pb-5">
+
+            <form [formGroup]="registerForm" autocomplete="off" (ngSubmit)=" registerForm.valid && register()">
+
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <app-forms-input [formControl]="$any(registerForm.controls['username'])" [label]="'Όνομα Χρήστη'"></app-forms-input>
+                        <app-forms-input [formControl]="$any(registerForm.controls['password'])" [label]="'Κωδικός'" [type]="'password'"></app-forms-input>
+                        <app-forms-input [formControl]="$any(registerForm.controls['confirmPassword'])" [label]="'Επιβεβαίωση Κωδικού'" [type]="'password'"></app-forms-input>                    
+                        
+                        <fieldset disabled>
+                            <app-forms-input [formControl]="$any(registerForm.controls['afm'])" [label]="'Α.Φ.Μ.'"></app-forms-input>
+                        </fieldset>
+
+                        <app-forms-input [formControl]="$any(registerForm.controls['iban'])" [label]="'IBAN'"></app-forms-input>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <app-forms-input [formControl]="$any(registerForm.controls['email'])" [label]="'E-mail'" [type]="'email'"></app-forms-input>
+                    </div>
+                    <div class="col-md-6">
+                        <app-forms-input [formControl]="$any(registerForm.controls['phoneNumber'])" [label]="'Τηλέφωνο'"></app-forms-input>
+                    </div>
+                </div> 
+                
+                <fieldset disabled>
+                    <div class="row">                   
+                        <div class="col-md-6">
+                            <app-forms-input [formControl]="$any(registerForm.controls['firstName'])" [label]="'Όνομα'"></app-forms-input>
+                        </div>
+                        <div class="col-md-6">
+                            <app-forms-input [formControl]="$any(registerForm.controls['lastName'])" [label]="'Επώνυμο'"></app-forms-input>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row mt-3">
+                        <h5 class="mb-3">Διεύθυνση</h5>
+                        <div class="col-md-6">
+                            <app-forms-input [formControl]="$any(registerForm.controls['addressStreet'])" [label]="'Οδός'"></app-forms-input>
+                        </div>
+                        <div class="col-md-6">
+                            <app-forms-input [formControl]="$any(registerForm.controls['addressNumber'])" [label]="'Αριθμός'"></app-forms-input>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <app-forms-input [formControl]="$any(registerForm.controls['postalCode'])" [label]="'Τ.Κ.'"></app-forms-input>
+                        </div>
+                        <div class="col-md-6">
+                            <app-forms-input [formControl]="$any(registerForm.controls['city'])" [label]="'Πόλη'"></app-forms-input>
+                        </div>
+                    </div>  
+
+                </fieldset>
+
+                <hr>
+                
+                <div class="d-flex flex-column">
+                    <button type="submit" class="btn btn-info mt-4" style="width: 35%;" [disabled]="registerForm.invalid">Υποβολή</button>
+
+                    <button class="btn btn-secondary my-5" style="width: 35%;" (click)="cancel()">Ακύρωση</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

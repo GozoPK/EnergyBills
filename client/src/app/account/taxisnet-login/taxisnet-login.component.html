@@ -1,0 +1,35 @@
+<div class="background">
+
+    <div class="container px-4">
+        <div class="row">
+            <div class="card text-center wrapper">
+                <div class="card-header">
+                    <h5>Energy Bills Voucher</h5>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title bg-primary text-light pt-1" style="height: 40px;">Αυθεντικοποίηση χρήστη</h4>
+                    <h4 class="card-title mt-4">Σύνδεση</h4>
+                    <p class="card-text mb-3">Παρακαλώ εισάγετε τους κωδικούς σας στο Taxisnet:</p>
+                    <hr>
+                    <div class="form-style mb-4">
+                        <form #taxisnetForm="ngForm" (ngSubmit)="login()">
+                            <div class="mb-3 text-start">
+                            <label class="form-label"><strong>Χρήστης</strong></label>
+                            <input type="text" class="form-control" name="username" [(ngModel)]="userForLogin.username">
+                            </div>
+                            <div class="mb-3 text-start">
+                            <label class="form-label"><strong>Κωδικός</strong></label>
+                            <input type="password" class="form-control" name="password" [(ngModel)]="userForLogin.password">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Σύνδεση</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    Energy Bills Voucher
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,14 @@
+.dropdown-toggle, .dropdown-item {
+    cursor: pointer;
+}
+
+.logo {
+    background: transparent;
+}
+
+.round {
+    max-height: 30px;
+    border: 2px solid white;
+    border-radius: 50%;
+    display: inline;
+}

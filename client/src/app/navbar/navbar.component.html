@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="#"><img class="logo" src="./assets/icon.PNG" alt="logo"></a>
+      <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" [ngbCollapse]="isMenuCollapsed">
+        <ul class="navbar-nav me-auto mb-3 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="#" (click)="isMenuCollapsed = true">Αρχική</a>
+            </li>
+            <ng-container *ngIf="isRegistered$ | async">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/members" routerLinkActive="active" (click)="isMenuCollapsed = true">Αιτήματα</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" (click)="isMenuCollapsed = true">Νέο Αίτημα</a>
+            </li>
+            </ng-container>
+        </ul>
+
+        <div class="dropdown" *ngIf="isRegistered$ | async" dropdown>
+          <img class="round" src="./assets/user.png" alt="user photo" *ngIf="isMenuCollapsed">
+          <a class="dropdown-toggle text-light text-decoration-none ms-md-2" dropdownToggle>Ο Λογαριασμός μου</a>
+          <div class="dropdown-menu" *dropdownMenu>
+            <a class="dropdown-item" href="#">Επεξεργασία</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" (click)="logout()">Αποσύνδεση</a>
+          </div>
+        </div>
+
+        <div class="d-flex" *ngIf="!(isRegistered$ | async)">
+          <button class="btn btn-outline-secondary" routerLink="/login">Σύνδεση</button>
+        </div>
+      </div> 
+    </div>
+  </nav>

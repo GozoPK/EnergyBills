@@ -1,0 +1,13 @@
+<div class="mb-3">
+    <label class="form-label">{{ label }}</label>
+    <input type="{{ type }}" 
+        class="form-control" 
+        [formControl]="control"
+        placeholder="{{ label }}"
+        [class.is-invalid]="control.dirty && control.invalid">
+
+    <div class="invalid-feedback" *ngIf="control.errors?.['required']">Το πεδίο είναι απαραίτητο</div>
+    <div class="invalid-feedback" *ngIf="control.errors?.['minlength']">Μη επαρκής αριθμός χαρακτήρων</div>
+    <div class="invalid-feedback" *ngIf="control.errors?.['maxlength']">Υπερβήκατε το όριο των επιτρεπόμενων χαρακτήρων</div>
+    <div class="invalid-feedback" *ngIf="control.errors?.['notMatching']">Οι κωδικοί δεν ταιριάζουν</div>
+</div>
