@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { TaxisnetUser } from 'src/app/models/TaxisnetUser';
 import { AccountService } from 'src/app/services/account.service';
 
@@ -12,9 +13,11 @@ import { AccountService } from 'src/app/services/account.service';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});
   user: TaxisnetUser | undefined;
+
+  errorMessage = this.accountService.errorMessage$;
   
   constructor(private fb: FormBuilder, private accountService: AccountService,
-    private router: Router) { }
+    private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.user = this.accountService.user;
@@ -53,8 +56,10 @@ export class RegisterComponent implements OnInit {
     model.annualIncome = this.user?.annualIncome;
 
     this.accountService.register(model).subscribe({
-      next: () => console.log('success'),
-      error: error => console.error(error)
+      next: () => {
+        this.toastr.success('Επιτυχής εγγραφή');
+        this.router.navigate(['/']);
+      }
     });
   }
 

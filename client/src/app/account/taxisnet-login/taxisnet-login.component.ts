@@ -11,6 +11,8 @@ import { Router } from '@angular/router'
 export class TaxisnetLoginComponent implements OnInit {
   userForLogin: Login = { } as Login;
 
+  errorMessage$ = this.accountService.errorMessage$;
+
   constructor(private accountService: AccountService, private router: Router) { }
 
   ngOnInit(): void {
@@ -19,8 +21,7 @@ export class TaxisnetLoginComponent implements OnInit {
 
   login() {
     this.accountService.taxisnetLogin(this.userForLogin).subscribe({
-      next: () => this.router.navigate(['/register']),
-      error: error => console.log(error)
+      next: () => this.router.navigate(['/register'])
     });
   }
 

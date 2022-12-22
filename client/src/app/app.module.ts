@@ -17,6 +17,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './account/login/login.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { BillsComponent } from './members/bills/bills.component';
+import { LoginExpiredModalComponent } from './modals/login-expired-modal/login-expired-modal.component';
+import { PageNotFoundComponent } from './errors/page-not-found/page-not-found.component';
+import { ServerErrorComponent } from './errors/server-error/server-error.component';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { LoadingInterceptor } from './interceptors/loading.interceptor';
 
 @NgModule({
   declarations: [
@@ -28,7 +33,10 @@ import { BillsComponent } from './members/bills/bills.component';
     RegisterComponent,
     FormsInputComponent,
     LoginComponent,
-    BillsComponent
+    BillsComponent,
+    LoginExpiredModalComponent,
+    PageNotFoundComponent,
+    ServerErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +49,9 @@ import { BillsComponent } from './members/bills/bills.component';
     NgbModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

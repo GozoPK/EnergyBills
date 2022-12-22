@@ -3,12 +3,13 @@
         <div class="row">
             <div class="card text-center wrapper ">
                 <div class="card-header">
-                    <h5>Energy Bills Voucher</h5>
+                    <img src="./assets/logologin.png" alt="Energy Bills Voucher" class="img-fluid">
                 </div>
                 <div class="card-body">
                     <h4 class="card-title mt-4">Σύνδεση</h4>
                     <p class="card-text mb-3">Παρακαλώ εισάγετε το όνομα χρήστη και τον κωδικό σας:</p>
-                    <hr>
+                    <div class="alert text-danger" *ngIf="errorMessage$ | async as errorMessage">{{ errorMessage }}</div>
+                    <hr>                   
                     <div class="form-style mb-4">
                         <form #taxisnetForm="ngForm" (ngSubmit)="login()">
                             <div class="mb-3 text-start">

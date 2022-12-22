@@ -30,7 +30,7 @@ namespace AppApi.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<AccountToReturnDto>> Register(UserForRegisterDto userForRegister)
         {
-            if ( await _userRepository.UserExists(userForRegister.Username, userForRegister.Afm)) return BadRequest("User already exists");
+            if ( await _userRepository.UserExists(userForRegister.Username, userForRegister.Afm)) return BadRequest("Έχετε πραγματοποιήσει ήδη εγγραφή για αυτόν το χρήστη");
 
             var user = _mapper.Map<UserEntity>(userForRegister);
 
@@ -56,7 +56,7 @@ namespace AppApi.Controllers
 
             if (user == null) 
             {
-                return Unauthorized("Invalid username or password");
+                return Unauthorized("Λανθασμένο όνομα χρήστη ή κωδικού.");
             }
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -64,7 +64,7 @@ namespace AppApi.Controllers
 
             for (int i=0; i<computedHash.Length; i++)
             {
-                if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid username or password");
+                if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Λανθασμένο όνομα χρήστη ή κωδικού.");
             }
 
             var account = _mapper.Map<AccountToReturnDto>(user);
@@ -80,7 +80,7 @@ namespace AppApi.Controllers
 
             if (taxisnetUser == null)
             {
-                return Unauthorized("Invalid Username or Password");
+                return Unauthorized("Λανθασμένο όνομα χρήστη ή κωδικού.");
             }
 
             taxisnetUser.Token = _tokenService.CreateToken(taxisnetUser);

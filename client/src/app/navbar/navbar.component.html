@@ -7,14 +7,14 @@
       <div class="collapse navbar-collapse" [ngbCollapse]="isMenuCollapsed">
         <ul class="navbar-nav me-auto mb-3 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="#" (click)="isMenuCollapsed = true">Αρχική</a>
+              <a class="nav-link" routerLink="/home" routerLinkActive="active" (click)="isMenuCollapsed = true">Αρχική</a>
             </li>
             <ng-container *ngIf="isRegistered$ | async">
             <li class="nav-item">
               <a class="nav-link" routerLink="/members" routerLinkActive="active" (click)="isMenuCollapsed = true">Αιτήματα</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" (click)="isMenuCollapsed = true">Νέο Αίτημα</a>
+              <a class="nav-link" href="#" routerLinkActive="active" (click)="isMenuCollapsed = true">Νέο Αίτημα</a>
             </li>
             </ng-container>
         </ul>

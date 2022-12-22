@@ -21,12 +21,11 @@ export class AppComponent implements OnInit {
     if (!this.isExpired(user.token)) {
       this.accountService.setCurrentUser(user, user.isRegistered);
     }   
-    console.log(Math.floor((new Date).getTime() / 1000)); 
   }
 
   isExpired(token: string) {
     const expireDate = (JSON.parse(atob(token.split('.')[1]))).exp;
     return (Math.floor((new Date).getTime() / 1000)) > expireDate;
   }
-
+  
 }

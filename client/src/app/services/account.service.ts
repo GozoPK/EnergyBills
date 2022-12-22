@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Login } from '../models/login';
 import { environment } from 'src/environments/environment';
 import { TaxisnetUser } from '../models/TaxisnetUser';
-import {map} from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
 import { User } from '../models/user';
 
 @Injectable({
@@ -13,6 +13,9 @@ import { User } from '../models/user';
 export class AccountService {
   baseUrl: string = environment.apiUrl;
   user: TaxisnetUser | undefined;
+
+  private errorMessageSubject = new BehaviorSubject<string | null>(null);
+  errorMessage$ = this.errorMessageSubject.asObservable();
   
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable()
@@ -26,7 +29,8 @@ export class AccountService {
           this.user = user;
           this.setCurrentUser(user, false);
         }
-      })
+      }),
+      catchError((error: HttpErrorResponse) => this.handleError(error))
     );
   }
 
@@ -36,7 +40,8 @@ export class AccountService {
         if (user) {
           this.setCurrentUser(user, true);
         }
-      })
+      }),
+      catchError((error: HttpErrorResponse) => this.handleError(error))
     );
   }
 
@@ -46,22 +51,28 @@ export class AccountService {
         if (user) {
           this.setCurrentUser(user, true);
         }
-      })
-    )
+      }),
+      catchError((error: HttpErrorResponse) => this.handleError(error))
+    );
   }
 
-  setCurrentUser(user: TaxisnetUser | User, isRegistered: boolean) {
-    const currentUser: User = {
-      username: user.username,
-      token: user.token,
-      afm: user.afm,
-      annualIncome: user.annualIncome,
-      isRegistered: isRegistered
-    };
-
-    localStorage.setItem('user', JSON.stringify(currentUser));
-
-    this.currentUserSubject.next(currentUser);
+  setCurrentUser(user: TaxisnetUser | User | null, isRegistered: boolean) {
+    if (user) {
+      const currentUser: User = {
+        username: user.username,
+        token: user.token,
+        afm: user.afm,
+        annualIncome: user.annualIncome,
+        isRegistered: isRegistered
+      };
+  
+      localStorage.setItem('user', JSON.stringify(currentUser));
+  
+      this.currentUserSubject.next(currentUser);
+      return;
+    }
+    
+    this.currentUserSubject.next(null);
   }
 
   logout() {
@@ -69,4 +80,12 @@ export class AccountService {
     localStorage.removeItem('user');
   }
 
+  handleError(error: HttpErrorResponse) {
+    if (error.status == 400 || error.status == 401) {
+      this.errorMessageSubject.next(error.error);
+      return EMPTY;
+    }
+    return EMPTY;
+  }
+  
 }

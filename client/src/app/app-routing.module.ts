@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './account/login/login.component';
 import { RegisterComponent } from './account/register/register.component';
 import { TaxisnetLoginComponent } from './account/taxisnet-login/taxisnet-login.component';
+import { PageNotFoundComponent } from './errors/page-not-found/page-not-found.component';
+import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { NotRegistered } from './guards/not-registered.guard';
 import { HomeComponent } from './intro/home/home.component';
 import { IntroComponent } from './intro/intro.component';
@@ -18,7 +20,10 @@ const routes: Routes = [
     ]
   },
   { path: 'login', component: LoginComponent, canActivate: [NotRegistered] },
-  { path: 'taxisnet-login', component: TaxisnetLoginComponent, canActivate: [NotRegistered]}
+  { path: 'taxisnet-login', component: TaxisnetLoginComponent, canActivate: [NotRegistered]},
+  { path: 'not-found', component: PageNotFoundComponent },
+  { path: 'server-error', component: ServerErrorComponent },
+  { path: '**', redirectTo: 'not-found', pathMatch: 'full' }
 ];
 
 @NgModule({

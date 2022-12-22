@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { tap } from 'rxjs';
 import { Login } from 'src/app/models/login';
 import { AccountService } from 'src/app/services/account.service';
 
@@ -11,6 +12,8 @@ import { AccountService } from 'src/app/services/account.service';
 export class LoginComponent implements OnInit {
   userForLogin: Login = { } as Login;
 
+  errorMessage$ = this.accountService.errorMessage$;
+
   constructor(private accountService: AccountService, private router: Router) { }
 
   ngOnInit(): void {
@@ -18,8 +21,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.accountService.login(this.userForLogin).subscribe({
-      next: () => this.router.navigate(['/']),
-      error: error => console.error(error)
+      next: () => this.router.navigate(['/'])
     });
   }
 
