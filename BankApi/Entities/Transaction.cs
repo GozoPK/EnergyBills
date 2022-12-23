@@ -8,7 +8,7 @@ namespace BankApi.Entities
         public Guid Id { get; set; }
 
         [Required]
-        public string TransactionNumber { get; set; }
+        public string TransactionNumber { get; set; } = (Guid.NewGuid()).ToString().Replace("-", "").Substring(1, 20).ToUpper();
 
         [Required]
         [Range(0, 9999999999999.99)]
@@ -28,16 +28,10 @@ namespace BankApi.Entities
         public bool IsExternalBank { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.UtcNow.AddHours(2);
 
         public Guid AccountId { get; set; }
         public Account Account { get; set; }
-
-        public Transaction()
-        {
-            TransactionNumber = (Guid.NewGuid()).ToString().Replace("-", "").Substring(1, 20).ToUpper();
-            Date = DateTime.UtcNow.AddHours(2);
-        }
     }
 
     public enum TransactionTypes
