@@ -4,6 +4,7 @@ namespace AppApi.DTOs
     {
         public string Username { get; set; }
         public string Token { get; set; }
+        public string Email { get; set; }
         public string Afm { get; set; }
         public decimal AnnualIncome { get; set; }
     }

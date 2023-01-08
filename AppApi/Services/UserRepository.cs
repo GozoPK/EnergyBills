@@ -19,7 +19,7 @@ namespace AppApi.Services
 
         public async Task<UserEntity> GetUserByUsernameAsync(string username)
         {
-            return await _context.Users.FirstOrDefaultAsync(user => user.Username == username);
+            return await _context.Users.FirstOrDefaultAsync(user => user.UserName == username);
         }
 
         public async Task<IEnumerable<UserEntity>> GetUsersAsync()
@@ -27,9 +27,11 @@ namespace AppApi.Services
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<bool> UserExists(string username, string afm)
+        public async Task<bool> UserExists(string username, string afm, string email)
         {
-            return ((await _context.Users.AnyAsync(user => user.Username == username)) && (await _context.Users.AnyAsync(user => user.Afm == afm)) );
+            return ((await _context.Users.AnyAsync(user => user.UserName == username)) 
+                && (await _context.Users.AnyAsync(user => user.Afm == afm)) 
+                && (await _context.Users.AnyAsync(user => user.Email == email)));
         }
 
         public async Task AddUser(UserEntity user)

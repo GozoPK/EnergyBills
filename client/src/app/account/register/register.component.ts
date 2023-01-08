@@ -14,7 +14,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});
   user: TaxisnetUser | undefined;
 
-  errorMessage = this.accountService.errorMessage$;
+  //errorMessage = this.accountService.errorMessage$;
   
   constructor(private fb: FormBuilder, private accountService: AccountService,
     private router: Router, private toastr: ToastrService) { }

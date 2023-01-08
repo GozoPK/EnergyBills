@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Login } from '../models/login';
 import { environment } from 'src/environments/environment';
 import { TaxisnetUser } from '../models/TaxisnetUser';
 import {catchError, map} from 'rxjs/operators';
-import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
+import { BehaviorSubject, EMPTY } from 'rxjs';
 import { User } from '../models/user';
 
 @Injectable({
@@ -75,6 +75,10 @@ export class AccountService {
     this.currentUserSubject.next(null);
   }
 
+  setErrorMessage(error: string | null) {
+    this.errorMessageSubject.next(error);
+  }
+
   logout() {
     this.currentUserSubject.next(null);
     localStorage.removeItem('user');
@@ -82,7 +86,7 @@ export class AccountService {
 
   handleError(error: HttpErrorResponse) {
     if (error.status == 400 || error.status == 401) {
-      this.errorMessageSubject.next(error.error);
+      this.setErrorMessage(error.error);
       return EMPTY;
     }
     return EMPTY;

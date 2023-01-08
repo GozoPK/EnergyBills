@@ -1,15 +1,14 @@
 using AppApi.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppApi.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<UserEntity>
     {
-        public DataContext(DbContextOptions options) : base(options)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
-
-        public DbSet<UserEntity> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -17,10 +16,14 @@ namespace AppApi.Data
 
             modelBuilder.Entity<UserEntity>()
                 .Property(p => p.AnnualIncome)
-                .HasPrecision(13, 2);
+                .HasColumnType("decimal(13,2)");
 
             modelBuilder.Entity<UserEntity>()
                 .HasIndex(p => p.Afm)
+                .IsUnique();
+
+            modelBuilder.Entity<UserEntity>()
+                .HasIndex(p => p.Email)
                 .IsUnique();
         }
     }

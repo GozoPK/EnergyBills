@@ -1,11 +1,14 @@
-using System.Security.Cryptography;
-using System.Text;
 using AppApi.DTOs;
 using AppApi.Entities;
+using AppApi.Errors;
+using AppApi.Extensions;
 using AppApi.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppApi.Controllers
 {
@@ -14,35 +17,45 @@ namespace AppApi.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
         private readonly IHttpService _httpService;
         private readonly ITokenService _tokenService;
-        public AccountController(IUserRepository userRepository ,IMapper mapper, IHttpService httpService,
-            ITokenService tokenService)
+        private readonly UserManager<UserEntity> _userManager;
+        private readonly SignInManager<UserEntity> _signInManager;
+        public AccountController(UserManager<UserEntity> userManager, IMapper mapper, IHttpService httpService,
+            SignInManager<UserEntity> signInManager, ITokenService tokenService)
         {
+            _signInManager = signInManager;
+            _userManager = userManager;
             _tokenService = tokenService;
             _httpService = httpService;
-            _userRepository = userRepository;
             _mapper = mapper;            
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet]
+        public async Task<ActionResult<AccountToReturnDto>> GetCurrentUser()
+        {
+            var username = User.GetUsername();
+
+            var user =  await _userManager.Users.FirstOrDefaultAsync(user => user.UserName == username);
+
+            return Ok(_mapper.Map<AccountToReturnDto>(user));
         }
 
         [Authorize(AuthenticationSchemes = "register")]
         [HttpPost("register")]
         public async Task<ActionResult<AccountToReturnDto>> Register(UserForRegisterDto userForRegister)
         {
-            if ( await _userRepository.UserExists(userForRegister.Username, userForRegister.Afm)) return BadRequest("Έχετε πραγματοποιήσει ήδη εγγραφή για αυτόν το χρήστη");
+            if ( await UserExists(userForRegister))
+            {
+                return BadRequest(new ErrorResponse(400, "Έχετε πραγματοποιήσει ήδη εγγραφή για αυτόν το χρήστη"));
+            } 
 
             var user = _mapper.Map<UserEntity>(userForRegister);
 
-            user.Id = Guid.NewGuid();
+            var result = await _userManager.CreateAsync(user, userForRegister.Password);
 
-            using var hmac = new HMACSHA512();
-
-            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userForRegister.Password));
-            user.PasswordSalt = hmac.Key;
-
-            await _userRepository.AddUser(user);
-            await _userRepository.SaveAllAsync();
+            if (!result.Succeeded) return BadRequest(new ErrorResponse(400));
 
             var account = _mapper.Map<AccountToReturnDto>(user);
             account.Token = _tokenService.CreateToken(account);
@@ -52,20 +65,16 @@ namespace AppApi.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<AccountToReturnDto>> Login(UserForLoginDto login)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(login.Username);
+            var user = await _userManager.Users.FirstOrDefaultAsync(user => user.UserName == login.Username);
 
             if (user == null) 
             {
-                return Unauthorized("Λανθασμένο όνομα χρήστη ή κωδικού.");
+                return Unauthorized(new ErrorResponse(401, "Λανθασμένο όνομα χρήστη ή κωδικού."));
             }
 
-            using var hmac = new HMACSHA512(user.PasswordSalt);
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(login.Password));
+            var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
 
-            for (int i=0; i<computedHash.Length; i++)
-            {
-                if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Λανθασμένο όνομα χρήστη ή κωδικού.");
-            }
+            if (!result.Succeeded) return Unauthorized(new ErrorResponse(401, "Λανθασμένο όνομα χρήστη ή κωδικού."));
 
             var account = _mapper.Map<AccountToReturnDto>(user);
             account.Token = _tokenService.CreateToken(account);
@@ -76,16 +85,35 @@ namespace AppApi.Controllers
         [HttpPost("taxisnet-login")]
         public async Task<ActionResult<TaxisnetUserDto>> TaxisnetLogin(UserForLoginDto user)
         {
-            var taxisnetUser = await _httpService.TaxisnetLogin(user);
-
-            if (taxisnetUser == null)
+            try
             {
-                return Unauthorized("Λανθασμένο όνομα χρήστη ή κωδικού.");
+                var taxisnetUser = await _httpService.TaxisnetLogin(user);
+
+                if (taxisnetUser == null)
+                {
+                    return Unauthorized(new ErrorResponse(401, "Λανθασμένο όνομα χρήστη ή κωδικού."));
+                }
+
+                taxisnetUser.Token = _tokenService.CreateToken(taxisnetUser);
+
+                return Ok(taxisnetUser);            
             }
+            catch (StatusCodeException ex)
+            {
+                if (ex.Error.StatusCode == 401)
+                {
+                    return Unauthorized(new ErrorResponse(401, "Λανθασμένο όνομα χρήστη ή κωδικού."));
+                }
+                
+                return new ObjectResult(new ErrorResponse(ex.Error.StatusCode));
+            }
+        }
 
-            taxisnetUser.Token = _tokenService.CreateToken(taxisnetUser);
-
-            return Ok(taxisnetUser);            
+        private async Task<bool> UserExists(UserForRegisterDto userForRegister)
+        {
+            return ((await _userManager.Users.AnyAsync(user => user.UserName == userForRegister.Username))
+                && (await _userManager.Users.AnyAsync(user => user.Email == userForRegister.Email))
+                && (await _userManager.Users.AnyAsync(user => user.Afm == userForRegister.Afm)));
         }
 
     }

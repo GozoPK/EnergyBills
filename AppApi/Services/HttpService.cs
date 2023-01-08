@@ -1,6 +1,8 @@
+using System.Net;
 using System.Text;
 using System.Text.Json;
 using AppApi.DTOs;
+using AppApi.Errors;
 
 namespace AppApi.Services
 {
@@ -23,9 +25,9 @@ namespace AppApi.Services
 
             HttpResponseMessage response = await _httpClient.PostAsync($"{url}/account/login", requestContent);
 
-            if ((int)response.StatusCode == StatusCodes.Status401Unauthorized)
+            if (response.StatusCode != HttpStatusCode.OK)
             {
-                return null;
+                throw new StatusCodeException(new ErrorResponse((int)response.StatusCode));
             }
 
             var content = await response.Content.ReadAsStringAsync();

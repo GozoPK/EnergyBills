@@ -21,12 +21,12 @@ namespace AppApi.Services
 
         public string CreateToken(AccountToReturnDto account)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["AppTokenKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["AppToken:Key"]));
 
             var claims = new List<Claim>()
             {
-                new Claim(JwtRegisteredClaimNames.NameId, account.Username),
-                new Claim(JwtRegisteredClaimNames.UniqueName, account.Afm)
+                new Claim(ClaimTypes.Name, account.Username),
+                new Claim(ClaimTypes.Email, account.Email)
             };
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -36,6 +36,7 @@ namespace AppApi.Services
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddHours(3),
                 SigningCredentials = credentials,
+                Issuer = _config["AppToken:Issuer"],
                 IssuedAt = DateTime.Now
             };
 
@@ -47,12 +48,11 @@ namespace AppApi.Services
 
         public string CreateToken(TaxisnetUserDto user)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["RegisterTokenKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["RegisterToken:Key"]));
 
             var claims = new List<Claim>()
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.Username),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.Afm)
+                new Claim(ClaimTypes.Name, user.Username)
             };
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -61,6 +61,7 @@ namespace AppApi.Services
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddMinutes(30),
+                Issuer = _config["RegisterToken:Issuer"],
                 SigningCredentials = credentials
             };
 
