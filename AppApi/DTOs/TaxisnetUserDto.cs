@@ -3,7 +3,6 @@ namespace AppApi.DTOs
     public class TaxisnetUserDto
     {
         public string Username { get; set; }
-        public string Token { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Afm { get; set; }
@@ -12,5 +11,7 @@ namespace AppApi.DTOs
         public string PostalCode { get; set; }
         public string City { get; set; }
         public decimal AnnualIncome { get; set; }
+        public string Token { get; set; }
+        public string TaxisnetToken { get; set; }
     }
 }

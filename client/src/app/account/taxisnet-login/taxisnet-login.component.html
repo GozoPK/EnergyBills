@@ -10,7 +10,11 @@
                     <h4 class="card-title bg-primary text-light pt-1" style="height: 40px;">Αυθεντικοποίηση χρήστη</h4>
                     <h4 class="card-title mt-4">Σύνδεση</h4>
                     <p class="card-text mb-3">Παρακαλώ εισάγετε τους κωδικούς σας στο Taxisnet:</p>
-                    <div class="alert text-danger" *ngIf="errorMessage$ | async as errorMessage">{{ errorMessage }}</div>
+                    <ul class="alert text-danger list-unstyled" *ngIf="errorMessages$ | async as errorMessages">
+                        <li *ngFor="let error of errorMessages">
+                            {{ error }}
+                        </li>
+                    </ul>
                     <hr>
                     <div class="form-style mb-4">
                         <form #taxisnetForm="ngForm" (ngSubmit)="login()">

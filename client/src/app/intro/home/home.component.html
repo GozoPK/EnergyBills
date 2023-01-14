@@ -17,10 +17,10 @@
         </p>
 
         <div class="mt-5 mb-3">
-            <button class="btn btn-primary" routerLink="/login" [disabled]="isRegistered$ | async">Είσοδος στην πλατφόρμα</button>
+            <button class="btn btn-primary" routerLink="/login" [disabled]="currentUser$ | async">Είσοδος στην πλατφόρμα</button>
         </div>
         <div class="mb-5">
-            <button class="btn btn-primary" routerLink="/taxisnet-login" [disabled]="isRegistered$ | async">Εγγραφή μέσω Taxisnet</button>
+            <button class="btn btn-primary" routerLink="/taxisnet-login" [disabled]="currentUser$ | async">Εγγραφή μέσω Taxisnet</button>
         </div>
     </div>
 

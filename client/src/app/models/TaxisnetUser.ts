@@ -10,4 +10,5 @@ export interface TaxisnetUser {
     postalCode: string;
     city: string;
     annualIncome: number;
+    taxisnetToken: string;
 }

@@ -8,7 +8,7 @@ import {
 import { EMPTY, Observable, take } from 'rxjs';
 import { AccountService } from '../services/account.service';
 import { Router } from '@angular/router';
-import { LoginExpiredModalComponent } from '../modals/login-expired-modal/login-expired-modal.component';
+import { LoginExpiredModalComponent } from '../shared/login-expired-modal/login-expired-modal.component';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 
 @Injectable()
@@ -19,25 +19,23 @@ export class JwtInterceptor implements HttpInterceptor {
   constructor(private accountService: AccountService, private router: Router, private modalService: BsModalService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: user => {
-        if (user) {
-          if (this.isExpired(user.token)) {
-            this.stopRequest = true;
-          }
-          
-          request = request.clone({
-            setHeaders: {
-              "Authorization": `Bearer ${user.token}`
-            }
-          });
-        }
-      }
-    });
+    if (request.url.includes('login')) {
+      return next.handle(request);
+    }
 
-    if (this.stopRequest) {
-      this.openModal();
-      return EMPTY;
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      if (this.isExpired(token)) {
+        this.openModal();
+        return EMPTY;
+      }
+
+      request = request.clone({
+        setHeaders: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
     }
     
     return next.handle(request);
@@ -59,7 +57,7 @@ export class JwtInterceptor implements HttpInterceptor {
 
     this.modalRef = this.modalService.show(LoginExpiredModalComponent, config);
     this.modalRef.onHide?.subscribe(() => {
-      this.accountService.setCurrentUser(null, false);
+      this.accountService.setCurrentUser(null);
       this.router.navigate(['/home']);
     });
   }

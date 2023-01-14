@@ -12,12 +12,12 @@ import { AccountService } from 'src/app/services/account.service';
 export class LoginComponent implements OnInit {
   userForLogin: Login = { } as Login;
 
-  errorMessage$ = this.accountService.errorMessage$;
+  errorMessages$ = this.accountService.errorMessages$;
 
   constructor(private accountService: AccountService, private router: Router) { }
 
   ngOnInit(): void {
-    this.accountService.setErrorMessage(null);
+    this.accountService.setErrorMessages(null);
   }
 
   login() {

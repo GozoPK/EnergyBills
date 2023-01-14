@@ -9,6 +9,8 @@ namespace TaxisNetSimApi.Data
         public AutoMapperProfiles()
         {
             CreateMap<TaxisNetUserEntity, UserToReturnDto>();
+
+            CreateMap<TaxisNetUserEntity, UserToReturnFromLoginDto>();
         }
     }
 }

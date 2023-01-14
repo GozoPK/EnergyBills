@@ -54,6 +54,7 @@ export class RegisterComponent implements OnInit {
   register() {
     const model = { ...this.registerForm.value };
     model.annualIncome = this.user?.annualIncome;
+    model.taxisnetToken = this.user?.taxisnetToken;
 
     this.accountService.register(model).subscribe({
       next: () => {

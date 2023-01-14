@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { map } from 'rxjs';
-import { AccountService } from '../services/account.service';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,10 +12,10 @@ export class NavbarComponent implements OnInit {
   model: any = { };
   isMenuCollapsed = true;
 
-  isRegistered$ = this.accountService.currentUser$.pipe(
+  currentUser$ = this.accountService.currentUser$.pipe(
     map(user => {
       if (user) {
-        return user.isRegistered;
+        return user;
       }
       return false;
     })

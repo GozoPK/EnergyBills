@@ -8,10 +8,10 @@ import { AccountService } from 'src/app/services/account.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  isRegistered$ = this.accountService.currentUser$.pipe(
+  currentUser$ = this.accountService.currentUser$.pipe(
     map(user => {
       if (user) {
-        return user.isRegistered;
+        return user;
       }
       return false;
     })

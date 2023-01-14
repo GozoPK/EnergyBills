@@ -12,15 +12,13 @@ export class AppComponent implements OnInit {
   constructor(private accountService: AccountService) { }
 
   ngOnInit(): void {
-    const userString = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
 
-    if (!userString) return;
-
-    const user = JSON.parse(userString);
-
-    if (!this.isExpired(user.token)) {
-      this.accountService.setCurrentUser(user, user.isRegistered);
-    }   
+    if (token) {
+      if (!this.isExpired(token)) {
+        this.accountService.getCurrentUser().subscribe();
+      } 
+    } 
   }
 
   isExpired(token: string) {

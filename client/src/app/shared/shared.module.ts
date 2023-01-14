@@ -5,14 +5,21 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { FormsInputComponent } from './forms-input/forms-input.component';
+import { LoginExpiredModalComponent } from './login-expired-modal/login-expired-modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    FormsInputComponent,
+    LoginExpiredModalComponent,
+  ],
   imports: [
     CommonModule,
     NgbCollapseModule,
+    ReactiveFormsModule,
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     ToastrModule.forRoot({
@@ -24,6 +31,9 @@ import { NgxSpinnerModule } from "ngx-spinner";
   ],
   exports: [
     NgbCollapseModule,
+    FormsInputComponent,
+    LoginExpiredModalComponent,
+    ReactiveFormsModule,
     BsDropdownModule,
     ModalModule,
     ToastrModule,

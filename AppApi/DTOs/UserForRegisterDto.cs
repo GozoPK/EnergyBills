@@ -51,5 +51,8 @@ namespace AppApi.DTOs
         [MinLength(27)]
         [MaxLength(27)]
         public string Iban { get; set; }
+
+        [Required]
+        public string TaxisnetToken { get; set; }
     }
 }

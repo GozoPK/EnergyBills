@@ -22,11 +22,19 @@ export class ErrorInterceptor implements HttpInterceptor {
           switch (response.status) {
 
             case 400:
-              this.toastr.error(response.error, response.status.toString());
+              if (response.error.errors) {
+                console.log('here');
+              }
+              else {
+                this.toastr.error(response.error.message);
+              }
               break;
 
             case 401:
-              throw response;
+              const authenticationError = response.error.failedToAuthenticate;
+              if (authenticationError) throw response;
+              else this.toastr.error(response.error.message);
+              break;
 
             case 404:
               this.router.navigate(['/not-found']);

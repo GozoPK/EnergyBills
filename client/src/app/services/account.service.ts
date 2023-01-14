@@ -14,20 +14,29 @@ export class AccountService {
   baseUrl: string = environment.apiUrl;
   user: TaxisnetUser | undefined;
 
-  private errorMessageSubject = new BehaviorSubject<string | null>(null);
-  errorMessage$ = this.errorMessageSubject.asObservable();
+  private errorMessagesSubject = new BehaviorSubject<string[] | null>(null);
+  errorMessages$ = this.errorMessagesSubject.asObservable();
   
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable()
 
   constructor(private http: HttpClient) { }
 
+  getCurrentUser() {
+    return this.http.get<User>(`${this.baseUrl}/account`).pipe(
+      map(user => {
+          this.setCurrentUser(user);
+          return user;         
+      })
+    );
+  }
+
   taxisnetLogin(user: Login) {
     return this.http.post<TaxisnetUser>(`${this.baseUrl}/account/taxisnet-login`, user).pipe(
       map((user: TaxisnetUser) => {
         if (user) {
           this.user = user;
-          this.setCurrentUser(user, false);
+          localStorage.setItem('token', user.token)
         }
       }),
       catchError((error: HttpErrorResponse) => this.handleError(error))
@@ -38,7 +47,8 @@ export class AccountService {
     return this.http.post<User>(`${this.baseUrl}/account/login`, user).pipe(
       map(user => {
         if (user) {
-          this.setCurrentUser(user, true);
+          localStorage.setItem('token', user.token)
+          this.setCurrentUser(user);
         }
       }),
       catchError((error: HttpErrorResponse) => this.handleError(error))
@@ -49,24 +59,23 @@ export class AccountService {
     return this.http.post<User>(`${this.baseUrl}/account/register`, model).pipe(
       map(user => {
         if (user) {
-          this.setCurrentUser(user, true);
+          localStorage.setItem('token', user.token)
+          this.user = undefined;
+          this.setCurrentUser(user);
         }
       }),
       catchError((error: HttpErrorResponse) => this.handleError(error))
     );
   }
 
-  setCurrentUser(user: TaxisnetUser | User | null, isRegistered: boolean) {
+  setCurrentUser(user: TaxisnetUser | User | null) {
     if (user) {
       const currentUser: User = {
         username: user.username,
-        token: user.token,
         afm: user.afm,
-        annualIncome: user.annualIncome,
-        isRegistered: isRegistered
+        token: user.token,
+        annualIncome: user.annualIncome
       };
-  
-      localStorage.setItem('user', JSON.stringify(currentUser));
   
       this.currentUserSubject.next(currentUser);
       return;
@@ -75,18 +84,25 @@ export class AccountService {
     this.currentUserSubject.next(null);
   }
 
-  setErrorMessage(error: string | null) {
-    this.errorMessageSubject.next(error);
+  setErrorMessages(errors: string[] | null) {
+    this.errorMessagesSubject.next(errors);
   }
 
   logout() {
     this.currentUserSubject.next(null);
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }
 
   handleError(error: HttpErrorResponse) {
     if (error.status == 400 || error.status == 401) {
-      this.setErrorMessage(error.error);
+      if (error.error.failedToAuthenticate) {
+        const errorMessage = [error.error.message];
+        console.log(errorMessage);
+        this.setErrorMessages(errorMessage);
+        return EMPTY;
+      }
+      const errorMessages = error.error.errors;
+      this.setErrorMessages(errorMessages);
       return EMPTY;
     }
     return EMPTY;

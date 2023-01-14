@@ -5,7 +5,7 @@ import { RegisterComponent } from './account/register/register.component';
 import { TaxisnetLoginComponent } from './account/taxisnet-login/taxisnet-login.component';
 import { PageNotFoundComponent } from './errors/page-not-found/page-not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
-import { NotRegistered } from './guards/not-registered.guard';
+import { TaxisRegistered } from './guards/taxis-registered.guard';
 import { HomeComponent } from './intro/home/home.component';
 import { IntroComponent } from './intro/intro.component';
 import { BillsComponent } from './members/bills/bills.component';
@@ -14,13 +14,13 @@ const routes: Routes = [
   { path: '', component: IntroComponent, 
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'register', component: RegisterComponent, canActivate: [NotRegistered] },
+      { path: 'register', component: RegisterComponent, canActivate: [TaxisRegistered] },
       { path: 'members', component: BillsComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },
-  { path: 'login', component: LoginComponent, canActivate: [NotRegistered] },
-  { path: 'taxisnet-login', component: TaxisnetLoginComponent, canActivate: [NotRegistered]},
+  { path: 'login', component: LoginComponent },
+  { path: 'taxisnet-login', component: TaxisnetLoginComponent },
   { path: 'not-found', component: PageNotFoundComponent },
   { path: 'server-error', component: ServerErrorComponent },
   { path: '**', redirectTo: 'not-found', pathMatch: 'full' }

@@ -8,7 +8,11 @@
                 <div class="card-body">
                     <h4 class="card-title mt-4">Σύνδεση</h4>
                     <p class="card-text mb-3">Παρακαλώ εισάγετε το όνομα χρήστη και τον κωδικό σας:</p>
-                    <div class="alert text-danger" *ngIf="errorMessage$ | async as errorMessage">{{ errorMessage }}</div>
+                    <ul class="alert text-danger list-unstyled" *ngIf="errorMessages$ | async as errorMessages">
+                        <li *ngFor="let error of errorMessages">
+                            {{ error }}
+                        </li>
+                    </ul>
                     <hr>                   
                     <div class="form-style mb-4">
                         <form #taxisnetForm="ngForm" (ngSubmit)="login()">

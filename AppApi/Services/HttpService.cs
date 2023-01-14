@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using AppApi.DTOs;
@@ -38,6 +39,28 @@ namespace AppApi.Services
             };
 
             return JsonSerializer.Deserialize<TaxisnetUserDto>(content, option);
+        }
+
+        public async Task<TaxisnetUserDto> GetUser(string token)
+        {
+            var url  = _config["TaxisnetUrl"];
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            HttpResponseMessage response = await _httpClient.GetAsync($"{url}/account");
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new StatusCodeException(new ErrorResponse((int)response.StatusCode));
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            return JsonSerializer.Deserialize<TaxisnetUserDto>(content, options);
         }
     }
 }

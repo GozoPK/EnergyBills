@@ -3,5 +3,4 @@ export interface User {
     afm: string;
     annualIncome: number;
     token: string;
-    isRegistered: boolean;
 }
