@@ -1,5 +1,10 @@
 using AppApi.Data;
+using AppApi.DTOs;
 using AppApi.Entities;
+using AppApi.Helpers;
+using AppApi.Interfaces;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppApi.Services
@@ -7,36 +12,60 @@ namespace AppApi.Services
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _context;
-        public UserRepository(DataContext context)
+        private readonly UserManager<UserEntity> _userManager;
+        private readonly IMapper _mapper;
+        public UserRepository(UserManager<UserEntity> userManager, DataContext context, IMapper mapper)
         {
-            _context = context;            
+            _mapper = mapper;
+            _userManager = userManager;
+            _context = context;
         }
 
-        public async Task<UserEntity> GetUserByAfmAsync(string afm)
+        public async Task<UserEntity> GetUserAsync(string username)
         {
-            return await _context.Users.FirstOrDefaultAsync(user => user.Afm == afm);
+            return await _userManager.FindByNameAsync(username);
         }
 
-        public async Task<UserEntity> GetUserByUsernameAsync(string username)
+        public async Task<UserEntity> GetUserWithBillsAsync(string username)
         {
-            return await _context.Users.FirstOrDefaultAsync(user => user.UserName == username);
+            return await _context.Users
+                    .Include(user => user.UserBills)
+                    .FirstOrDefaultAsync(user => user.UserName == username);
         }
 
-        public async Task<IEnumerable<UserEntity>> GetUsersAsync()
+        public async Task<PagedList<UserBillToReturnDto>> GetUserBillsAsync(UserParams userParams)
         {
-            return await _context.Users.ToListAsync();
-        }
+            var user = await GetUserAsync(userParams.Username);
 
-        public async Task<bool> UserExists(string username, string afm, string email)
-        {
-            return ((await _context.Users.AnyAsync(user => user.UserName == username)) 
-                && (await _context.Users.AnyAsync(user => user.Afm == afm)) 
-                && (await _context.Users.AnyAsync(user => user.Email == email)));
-        }
+            var query = _context.Bills.Where(bill => bill.UserEntityId == user.Id);
 
-        public async Task AddUser(UserEntity user)
-        {
-            await _context.Users.AddAsync(user);
+            query = userParams.Type switch
+            {
+                "electricity" => query.Where(bill => bill.Type == BillType.Electricity),
+                "naturalgas" => query.Where(bill => bill.Type == BillType.NaturalGas),
+                "both" => query.Where(bill => bill.Type == BillType.Both),
+                _ => query
+            };
+
+            query = userParams.Status switch
+            {
+                "approved" => query.Where(bill => bill.Status == Status.Approved),
+                "rejected" => query.Where(bill => bill.Status == Status.Rejected),
+                "pending" => query.Where(bill => bill.Status == Status.Pending),
+                _ => query
+            };
+
+            query = userParams.OrderBy switch
+            {
+                "dateoldest" => query.OrderBy(bill => bill.Year).ThenBy(bill => bill.Month),
+                _ => query.OrderByDescending(bill => bill.Year).ThenByDescending(bill => bill.Month)
+            };
+
+            var totalCount = await query.CountAsync();
+            var userBills = await query.Skip((userParams.PageNumber -1) * userParams.PageSize).Take(userParams.PageSize).ToListAsync();
+            var list = _mapper.Map<IEnumerable<UserBillToReturnDto>>(userBills);
+
+            return new PagedList<UserBillToReturnDto>(list, userParams.PageNumber, userParams.PageSize, totalCount);
         }
 
         public async Task<bool> SaveAllAsync()

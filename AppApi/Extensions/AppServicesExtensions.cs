@@ -1,5 +1,6 @@
 using AppApi.Data;
 using AppApi.Errors;
+using AppApi.Interfaces;
 using AppApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,7 @@ namespace AppApi.Extensions
             services.AddHttpClient();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IBillsRepository, BillsRepository>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IHttpService, HttpService>();
 

@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using AppApi.DTOs;
 using AppApi.Entities;
 using AppApi.Errors;
@@ -38,7 +37,7 @@ namespace AppApi.Controllers
         {
             var username = User.GetUsername();
 
-            var user =  await _userManager.Users.FirstOrDefaultAsync(user => user.UserName == username);
+            var user =  await _userManager.FindByNameAsync(username);
 
             return Ok(_mapper.Map<AccountToReturnDto>(user));
         }

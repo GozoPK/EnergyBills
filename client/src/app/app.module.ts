@@ -15,7 +15,6 @@ import { SharedModule } from './shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './account/login/login.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
-import { BillsComponent } from './members/bills/bills.component';
 import { PageNotFoundComponent } from './errors/page-not-found/page-not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
@@ -30,7 +29,6 @@ import { LoadingInterceptor } from './interceptors/loading.interceptor';
     TaxisnetLoginComponent,
     RegisterComponent,
     LoginComponent,
-    BillsComponent,
     PageNotFoundComponent,
     ServerErrorComponent
   ],

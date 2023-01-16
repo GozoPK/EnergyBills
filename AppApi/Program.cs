@@ -1,5 +1,10 @@
+using AppApi.Data;
+using AppApi.Entities;
 using AppApi.Extensions;
 using AppApi.Middleware;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,5 +37,21 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+try
+{
+    var context = services.GetRequiredService<DataContext>();
+    var userManager = services.GetRequiredService<UserManager<UserEntity>>();
+    var mapper = services.GetRequiredService<IMapper>();
+    await context.Database.MigrateAsync();
+    await Seed.SeedUserBills(context, userManager, mapper);
+}
+catch (Exception ex)
+{
+    var logger = services.GetService<ILogger<Program>>();
+    logger.LogError(ex, "An error occured during migration");
+}
 
 app.Run();

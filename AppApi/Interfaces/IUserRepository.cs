@@ -1,14 +1,14 @@
+using AppApi.DTOs;
 using AppApi.Entities;
+using AppApi.Helpers;
 
-namespace AppApi.Services
+namespace AppApi.Interfaces
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<UserEntity>> GetUsersAsync();
-        Task<UserEntity> GetUserByUsernameAsync(string username);
-        Task<UserEntity> GetUserByAfmAsync(string afm);
-        Task AddUser(UserEntity user);
-        Task<bool> UserExists(string username, string afm, string email);
+        Task<PagedList<UserBillToReturnDto>> GetUserBillsAsync(UserParams userParams);
+        Task<UserEntity> GetUserAsync(string username);
+        Task<UserEntity> GetUserWithBillsAsync(string username);
         Task<bool> SaveAllAsync();
     }
 }

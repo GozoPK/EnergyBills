@@ -8,14 +8,13 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
 import { TaxisRegistered } from './guards/taxis-registered.guard';
 import { HomeComponent } from './intro/home/home.component';
 import { IntroComponent } from './intro/intro.component';
-import { BillsComponent } from './members/bills/bills.component';
 
 const routes: Routes = [
   { path: '', component: IntroComponent, 
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'register', component: RegisterComponent, canActivate: [TaxisRegistered] },
-      { path: 'members', component: BillsComponent },
+      { path: 'energy-bills', loadChildren: () => import('./energy-bills/energy-bills.module').then(m => m.EnergyBillsModule) },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },
