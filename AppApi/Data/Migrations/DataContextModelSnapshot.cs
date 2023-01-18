@@ -62,7 +62,7 @@ namespace AppApi.Data.Migrations
 
                     b.HasIndex("UserEntityId");
 
-                    b.ToTable("Bills");
+                    b.ToTable("Bills", (string)null);
                 });
 
             modelBuilder.Entity("AppApi.Entities.UserEntity", b =>

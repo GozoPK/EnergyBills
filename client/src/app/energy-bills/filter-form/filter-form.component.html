@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-between mb-3">
+    <div class="d-flex">
+        <button class="btn btn-outline-secondary me-2" (click)="showFilters = !showFilters">Φίλτρα</button>
+        <button class="btn btn-outline-secondary" (click)="clear()">Καθαρισμός</button>
+    </div>
+
+    <div class="d-flex">
+        <label class="col-form-label me-2">Ταξινόμηση: </label>
+        <select class="form-select ms-1" (change)="onChange()" [(ngModel)]="userParams.orderBy">
+            <option selected [value]="''">Πιο Πρόσφατα</option>
+            <option [value]="'dateoldest'">Πιο Παλιά</option>
+        </select>
+    </div>
+</div>
+
+<form [formGroup]="filterForm">
+    <div class="row mb-3" [hidden]="!showFilters">
+
+        <div class="col-md-3">
+            <app-forms-select [formControl]="filterForm.controls['type']" 
+                [label]="'Τύπος Λογαριασμού'" [header]="'Επιλέξτε Τύπο'" [options]="selectTypes">
+            </app-forms-select>
+        </div>
+
+        <div class="col-md-3">
+            <app-forms-select [formControl]="filterForm.controls['status']" 
+                [label]="'Κατάσταση Αίτησης'" [header]="'Επιλέξτε Κατάσταση'" [options]="selectStatuses">
+            </app-forms-select>
+        </div>            
+
+        <div class="col-md-2 offset-md-2">
+            <app-date-picker [formControl]="filterForm.controls['minDate']" [label]="'Από'"></app-date-picker>
+        </div>
+
+        <div class="col-md-2">
+            <app-date-picker [formControl]="filterForm.controls['maxDate']" [label]="'Εως'"></app-date-picker>
+        </div>       
+        
+    </div>
+</form>

@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit {
       firstName: [this.user?.firstName],
       lastName: [this.user?.lastName],
       afm: [this.user?.afm],
-      iban: [this.user?.iban, [Validators.required, Validators.minLength(27), Validators.maxLength(27)]],
+      iban: ['', [Validators.required, Validators.minLength(27), Validators.maxLength(27)]],
       addressStreet: [this.user?.addressStreet],
       addressNumber: [this.user?.addressNumber],
       postalCode: [this.user?.postalCode],

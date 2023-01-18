@@ -1,15 +1,21 @@
-<app-navbar></app-navbar>
+<div class="d-flex flex-column justify-content-between" style="height: 100vh;">
+  
+  <div class="flex-flex column">
+    <app-navbar></app-navbar>
 
-<div class="container inside" style="margin-bottom: 200px;">
-    <router-outlet></router-outlet>
+    <div class="container inside">
+        <router-outlet></router-outlet>
+    </div>
+  </div>  
+
+  <footer class="bg-primary text-dark text-center text-lg-start fs-5">
+      <!-- Copyright -->
+      <hr>
+      <div class="text-center mb-4">
+        © 2022 Copyright:
+        <a class="text-dark ms-2" href="https://government.gov.gr/">Ελληνική Δημοκρατία</a>
+      </div>
+      <!-- Copyright -->
+  </footer>
 </div>
 
-<footer class="bg-primary text-dark text-center text-lg-start fs-5" style="height: 100px;">
-    <!-- Copyright -->
-    <hr>
-    <div class="text-center p-3">
-      © 2022 Copyright:
-      <a class="text-dark ms-2" href="https://government.gov.gr/">Ελληνική Δημοκρατία</a>
-    </div>
-    <!-- Copyright -->
-  </footer>

@@ -1,0 +1,5 @@
+<div>
+    <label class="form-label mx-2">{{ label }}: </label>
+    <input type="text" [formControl]="control" class="form-control" (onShown)="openCalendar($event)"
+        bsDatepicker [bsConfig]="bsConfig" [minDate]="minDate" [maxDate]="maxDate">
+</div>

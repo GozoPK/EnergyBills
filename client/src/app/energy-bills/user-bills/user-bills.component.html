@@ -1,1 +1,48 @@
-<p>user-bills works!</p>
+<div class="container my-5" *ngIf="pagedList$ | async as pagedList">
+    
+    <app-filter-form></app-filter-form>
+
+    <div>
+        <hr>
+        <h4 class="fst-italic fw-bold" *ngIf="pagedList.result && pagedList.result.length === 0">Δεν βρέθηκαν αιτήσεις</h4>
+    </div>
+
+    <div class="row mb-5" *ngIf="pagedList.result && pagedList.result.length > 0">
+        <div class="col-12 table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Ημερομηνία</th>
+                        <th>Αρ. Λογαριασμού</th>
+                        <th>Τύπος</th>
+                        <th>Ποσό</th>
+                        <th>Επιδότηση</th>
+                        <th>Κατάσταση</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let bill of pagedList.result let i = index">
+                        <th>{{ i + 1 }}</th>
+                        <td>{{ bill.month }} - {{ bill.year }}</td>
+                        <td>{{ bill.billNumber }}</td>
+                        <td>{{ bill.type }}</td>
+                        <td>{{bill.ammount | currency: 'EUR'}}</td>
+                        <td>{{bill.ammountToReturn | currency: 'EUR'}}</td>
+                        <td [ngClass]="{ 'fst-italic': bill.status === 'Εγκριθείσα' }">{{bill.status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center" *ngIf="pagedList.pagination">
+        <app-paging 
+            [totalItems]="pagedList.pagination.totalItems" 
+            [itemsPerPage]="pagedList.pagination.itemsPerPage" 
+            [currentPage]="pagedList.pagination.currentPage"
+            (onPageChanged)="pageChanged($event)">
+        </app-paging>
+    </div>
+
+</div>

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { map, switchMap } from 'rxjs';
+import { UserParams } from 'src/app/models/userParams';
+import { UserBillsService } from 'src/app/services/user-bills.service';
 
 @Component({
   selector: 'app-user-bills',
@@ -6,10 +9,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-bills.component.css']
 })
 export class UserBillsComponent implements OnInit {
+  userParams = new UserParams();
 
-  constructor() { }
+  pagedList$ = this.userBillsService.userParams$.pipe(
+    switchMap(params => this.userBillsService.getUserBills(params).pipe(
+      map(response => response ? response : null)
+    ))
+  );
+
+  constructor(private userBillsService: UserBillsService) { }
 
   ngOnInit(): void {
+  }
+
+  onChange() {
+    this.userBillsService.setUserParams(this.userParams);
+  }
+
+  pageChanged(event: any) {
+    if (this.userParams && this.userParams.pageNumber != event) {
+      this.userParams.pageNumber = event;
+      this.onChange();
+    }
   }
 
 }

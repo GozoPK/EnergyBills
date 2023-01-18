@@ -7,7 +7,12 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { FormsInputComponent } from './forms-input/forms-input.component';
 import { LoginExpiredModalComponent } from './login-expired-modal/login-expired-modal.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { PagingComponent } from './paging/paging.component';
+import { FormsSelectComponent } from './forms-select/forms-select.component';
+import { DatePickerComponent } from './date-picker/date-picker.component';
 
 
 
@@ -15,11 +20,16 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     FormsInputComponent,
     LoginExpiredModalComponent,
+    PagingComponent,
+    FormsSelectComponent,
+    DatePickerComponent,
   ],
   imports: [
     CommonModule,
     NgbCollapseModule,
+    FormsModule,
     ReactiveFormsModule,
+    PaginationModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     ToastrModule.forRoot({
@@ -27,17 +37,24 @@ import { ReactiveFormsModule } from '@angular/forms';
     }),
     NgxSpinnerModule.forRoot({
       type: 'ball-spin-clockwise'
-    })
+    }),
+    BsDatepickerModule.forRoot()
   ],
   exports: [
     NgbCollapseModule,
     FormsInputComponent,
     LoginExpiredModalComponent,
+    FormsModule,
     ReactiveFormsModule,
+    PaginationModule,
     BsDropdownModule,
     ModalModule,
     ToastrModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    BsDatepickerModule,
+    PagingComponent,
+    FormsSelectComponent,
+    DatePickerComponent
   ]
 })
 export class SharedModule { }

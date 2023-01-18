@@ -55,10 +55,16 @@ namespace AppApi.Services
                 _ => query
             };
 
+            var minDateExpression = 12*(userParams.MinYear - 2022) + userParams.MinMonth;
+            query = query.Where(bill => (12*(bill.Year - 2022) + (int)bill.Month) >= minDateExpression);  
+
+            var maxDateExpression = 12*(userParams.MaxYear - 2022) + userParams.MaxMonth;
+            query = query.Where(bill => (12*(bill.Year - 2022) + (int)bill.Month) <= maxDateExpression);            
+
             query = userParams.OrderBy switch
             {
-                "dateoldest" => query.OrderBy(bill => bill.Year).ThenBy(bill => bill.Month),
-                _ => query.OrderByDescending(bill => bill.Year).ThenByDescending(bill => bill.Month)
+                "dateoldest" => query.OrderBy(bill => bill.Year).ThenBy(bill => bill.Month).ThenBy(bill => bill.Type),
+                _ => query.OrderByDescending(bill => bill.Year).ThenByDescending(bill => bill.Month).ThenBy(bill => bill.Type)
             };
 
             var totalCount = await query.CountAsync();
@@ -72,5 +78,6 @@ namespace AppApi.Services
         {
             return await _context.SaveChangesAsync() > 0;
         }
+
     }
 }

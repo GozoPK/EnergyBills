@@ -4,7 +4,6 @@ export interface TaxisnetUser {
     firstName: string;
     lastName: string;
     afm: string;
-    iban: string;
     addressStreet: string;
     addressNumber: string;
     postalCode: string;

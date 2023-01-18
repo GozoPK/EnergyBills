@@ -34,8 +34,7 @@ import { LoadingInterceptor } from './interceptors/loading.interceptor';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    FormsModule,
+    AppRoutingModule,   
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

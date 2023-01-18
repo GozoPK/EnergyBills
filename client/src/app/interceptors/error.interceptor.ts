@@ -23,7 +23,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
             case 400:
               if (response.error.errors) {
-                console.log('here');
+                throw response;
               }
               else {
                 this.toastr.error(response.error.message);
