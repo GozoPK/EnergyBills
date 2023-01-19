@@ -1,6 +1,6 @@
 <div>
-    <label class="form-label mx-2">{{ label }}: </label>
-    <select [formControl]="control" class="form-select ms-1">
+    <label *ngIf="!withoutLabel" class="form-label me-2">{{ label }}: </label>
+    <select [formControl]="control" class="form-select" [ngClass]="{ 'form-select-lg': withoutLabel }">
         <option [ngValue]="''">-- {{ header }} --</option>
         <option *ngFor="let option of options" [ngValue]="option.value">{{ option.description }}</option>
     </select>

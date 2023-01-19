@@ -1,7 +1,8 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { CreateBill } from '../models/createBill';
 import { PagedList } from '../models/pagingData';
 import { UserBill } from '../models/userBill';
 import { UserParams } from '../models/userParams';
@@ -14,6 +15,9 @@ export class UserBillsService {
 
   userParamsSubject = new BehaviorSubject<UserParams>(new UserParams);
   userParams$ = this.userParamsSubject.asObservable();
+
+  private errorMessagesSubject = new BehaviorSubject<string[] | null>(null);
+  errorMessages$ = this.errorMessagesSubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -37,11 +41,37 @@ export class UserBillsService {
         const pagingHeaders = response.headers.get('pagination');
         if (pagingHeaders) pagedList.pagination = JSON.parse(pagingHeaders);
         return pagedList;
-      })
+      }),
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  createBill(billForm: CreateBill) {
+    return this.http.post(`${this.baseUrl}/user/bills`, billForm).pipe(
+      catchError(error => this.handleError(error))
     );
   }
 
   setUserParams(userParams: UserParams) {
     this.userParamsSubject.next(userParams);
+  }
+
+  setErrorMessages(errors: string[] | null) {
+    this.errorMessagesSubject.next(errors);
+  }
+
+  handleError(error: HttpErrorResponse) {
+    if (error.status == 400 || error.status == 401) {
+      if (error.error.failedToAuthenticate) {
+        const errorMessage = [error.error.message];
+        console.log(errorMessage);
+        this.setErrorMessages(errorMessage);
+        return EMPTY;
+      }
+      const errorMessages = error.error.errors;
+      this.setErrorMessages(errorMessages);
+      return EMPTY;
+    }
+    return EMPTY;
   }
 }

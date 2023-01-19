@@ -5,6 +5,7 @@ import { RegisterComponent } from './account/register/register.component';
 import { TaxisnetLoginComponent } from './account/taxisnet-login/taxisnet-login.component';
 import { PageNotFoundComponent } from './errors/page-not-found/page-not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
+import { IsUserGuard } from './guards/is-user.guard';
 import { TaxisRegistered } from './guards/taxis-registered.guard';
 import { HomeComponent } from './intro/home/home.component';
 import { IntroComponent } from './intro/intro.component';
@@ -14,7 +15,11 @@ const routes: Routes = [
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'register', component: RegisterComponent, canActivate: [TaxisRegistered] },
-      { path: 'energy-bills', loadChildren: () => import('./energy-bills/energy-bills.module').then(m => m.EnergyBillsModule) },
+      { 
+        path: 'energy-bills', 
+        loadChildren: () => import('./energy-bills/energy-bills.module').then(m => m.EnergyBillsModule),
+        canActivate: [IsUserGuard]
+      },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]
   },

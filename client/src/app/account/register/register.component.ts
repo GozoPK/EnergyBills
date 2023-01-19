@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TaxisnetUser } from 'src/app/models/TaxisnetUser';
 import { AccountService } from 'src/app/services/account.service';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-register',
@@ -14,10 +15,10 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});
   user: TaxisnetUser | undefined;
 
-  //errorMessage = this.accountService.errorMessage$;
+  errorMessages$ = this.accountService.errorMessages$;
   
   constructor(private fb: FormBuilder, private accountService: AccountService,
-    private router: Router, private toastr: ToastrService) { }
+    private router: Router, private modalService: ModalService) { }
 
   ngOnInit(): void {
     this.user = this.accountService.user;
@@ -34,7 +35,7 @@ export class RegisterComponent implements OnInit {
       firstName: [this.user?.firstName],
       lastName: [this.user?.lastName],
       afm: [this.user?.afm],
-      iban: ['', [Validators.required, Validators.minLength(27), Validators.maxLength(27)]],
+      iban: ['', [Validators.required, Validators.minLength(27), Validators.maxLength(27), Validators.pattern(/^GR[0-9]+$/)]],
       addressStreet: [this.user?.addressStreet],
       addressNumber: [this.user?.addressNumber],
       postalCode: [this.user?.postalCode],
@@ -58,8 +59,7 @@ export class RegisterComponent implements OnInit {
 
     this.accountService.register(model).subscribe({
       next: () => {
-        this.toastr.success('Επιτυχής εγγραφή');
-        this.router.navigate(['/']);
+        this.modalService.openRegisterModal('Επιτυχής εγγραφή');
       }
     });
   }

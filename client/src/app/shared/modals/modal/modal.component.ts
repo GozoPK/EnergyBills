@@ -3,10 +3,10 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-login-expired-modal',
-  templateUrl: './login-expired-modal.component.html',
-  styleUrls: ['./login-expired-modal.component.css']
+  templateUrl: './modal.component.html',
+  styleUrls: ['./modal.component.css']
 })
-export class LoginExpiredModalComponent implements OnInit {
+export class ModalComponent implements OnInit {
   imgUrl: string = '';
   text: string = '';
 

@@ -1,0 +1,10 @@
+<div class="modal-header d-block text-center border border-0">
+    <h4 class="modal-title pull-left"></h4> 
+</div>
+<div class="modal-body d-flex flex-column justify-content-between align-items-center mt-5" style="height: 170px;">
+    <h5 class="text-primary mb-4 text-center">{{ text }}</h5>
+    <div class="d-flex">
+        <button class="btn btn-primary me-3" (click)="confirm()" style="width: 85px;">ΝΑΙ</button>
+        <button class="btn btn-outline-primary" (click)="modalRef.hide()" style="width: 85px;">ΟΧΙ</button>
+    </div>
+</div>

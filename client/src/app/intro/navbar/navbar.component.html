@@ -11,10 +11,10 @@
             </li>
             <ng-container *ngIf="currentUser$ | async">
             <li class="nav-item">
-              <a class="nav-link" routerLink="/energy-bills" routerLinkActive="active" (click)="isMenuCollapsed = true">Αιτήματα</a>
+              <a class="nav-link" routerLink="/energy-bills" routerLinkActive="active" (click)="isMenuCollapsed = true" [routerLinkActiveOptions]="{exact: true}">Αιτήματα</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" routerLinkActive="active" (click)="isMenuCollapsed = true">Νέο Αίτημα</a>
+              <a class="nav-link" routerLink="/energy-bills/add-bill" routerLinkActive="active" (click)="isMenuCollapsed = true">Νέο Αίτημα</a>
             </li>
             </ng-container>
         </ul>

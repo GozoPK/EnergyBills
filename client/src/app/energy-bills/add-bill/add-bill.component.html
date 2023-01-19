@@ -1,0 +1,31 @@
+<div style="height: 120px;" class="text-bg-success p-3 text-center d-flex flex-column justify-content-center">
+    <h4>Φόρμα υποβολής στοιχείων λογαριασμού ενέργειας</h4>
+</div>
+
+<p class="my-4 text-center"><strong>Συμπληρώστε τα πεδία της φόρμας και επιλέξτε υποβολή. η αξιολόγηση του αιτήματος θα διαρκέσει λίγες ημέρες.
+     μπορείτε να ενημερωθείτε για την πορεία του στην καρτέλα «Αιτήματα» του ιστότοπου.</strong></p>
+
+<hr>
+
+<ul class="alert text-danger text-center list-unstyled" *ngIf="errorMessages$ | async as errorMessages">
+    <li *ngFor="let error of errorMessages">
+        {{ error }}
+    </li>
+</ul>
+
+<form [formGroup]="createForm" (ngSubmit)="create()">
+    <div class="d-flex flex-wrap justify-content-center mt-5">
+        <div class="col-md-4">
+            <app-forms-input [formControl]="createForm.controls['billNumber']" [label]="'Αρ. Λογαριασμού'" [type]="'text'"></app-forms-input>
+            <app-forms-input [formControl]="createForm.controls['ammount']" [label]="'Ποσό'" [type]="'number'"></app-forms-input>
+            <app-forms-select [formControl]="createForm.controls['type']" [label]="'Τύπος Λογαριασμού'" [header]="'Επιλέξτε Τύπο'" [options]="selectTypes"></app-forms-select>
+            <div class="my-3">
+                <app-date-picker [formControl]="createForm.controls['date']" [label]="'Ημερομηνία'"></app-date-picker>
+            </div>           
+            <div class="d-flex justify-content-center my-4">
+                <button class="btn btn-success me-2" type="submit" [disabled]="createForm.invalid">Υποβολή</button>
+                <button class="btn btn-info" type="button" (click)="clear()">Καθαρισμός</button>
+            </div>
+        </div>
+    </div>
+</form>

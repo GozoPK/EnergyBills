@@ -66,6 +66,26 @@ namespace AppApi.Controllers
                 return BadRequest(new ErrorResponse(400, "Όχι επαρκές ποσό λογαριασμού προς επιδότηση"));
             }
 
+            var userBillForCheck = user.UserBills.FirstOrDefault(bill => bill.Month == userBillToCreate.Month && bill.Year == userBillToCreate.Year);
+            if (userBillForCheck != null)
+            {
+                if (userBillForCheck.Type == BillType.Both)
+                {
+                    return BadRequest(new ErrorResponse(400, "Έχετε ήδη υποβάλει αίτηση για αυτό το μήνα"));
+                } 
+                    
+                if (userBillForCheck.Type == userBillToCreate.Type || userBillToCreate.Type == BillType.Both)
+                {
+                    return BadRequest(new ErrorResponse(400, "Έχετε ήδη υποβάλει αίτηση για αυτό το τύπο λογαριασμού"));
+                }
+            }
+
+            var checkExistingNumber = user.UserBills.Any(bill => bill.BillNumber == userBillToCreate.BillNumber);
+            if (checkExistingNumber)
+            {
+                return BadRequest(new ErrorResponse(400, "Ο αριθμός λογαριασμού υπάρχει ήδη"));
+            }
+
             var userBill = _mapper.Map<UserBill>(userBillToCreate);
 
             user.UserBills.Add(userBill);

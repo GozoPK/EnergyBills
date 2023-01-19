@@ -6,23 +6,25 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { FormsInputComponent } from './forms-input/forms-input.component';
-import { LoginExpiredModalComponent } from './login-expired-modal/login-expired-modal.component';
+import { ModalComponent } from './modals/modal/modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { PagingComponent } from './paging/paging.component';
 import { FormsSelectComponent } from './forms-select/forms-select.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
+import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.component';
 
 
 
 @NgModule({
   declarations: [
     FormsInputComponent,
-    LoginExpiredModalComponent,
+    ModalComponent,
     PagingComponent,
     FormsSelectComponent,
     DatePickerComponent,
+    ConfirmModalComponent,
   ],
   imports: [
     CommonModule,
@@ -43,7 +45,7 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
   exports: [
     NgbCollapseModule,
     FormsInputComponent,
-    LoginExpiredModalComponent,
+    ModalComponent,
     FormsModule,
     ReactiveFormsModule,
     PaginationModule,

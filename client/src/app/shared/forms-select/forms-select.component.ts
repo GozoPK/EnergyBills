@@ -9,7 +9,8 @@ import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 export class FormsSelectComponent implements ControlValueAccessor {
   @Input() label = '';
   @Input() header = '';
-  @Input() options: { value: string, description: string}[] = [];
+  @Input() withoutLabel = false
+  @Input() options: { value: string | number, description: string}[] = [];
 
   get control(): FormControl {
     return this.ngControl.control as FormControl;

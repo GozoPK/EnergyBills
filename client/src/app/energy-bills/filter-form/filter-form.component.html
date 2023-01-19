@@ -1,10 +1,10 @@
-<div class="d-flex justify-content-between mb-3">
-    <div class="d-flex">
+<div class="d-flex flex-column-reverse flex-md-row flex-wrap justify-content-between mb-3">
+    <div class="d-flex justify-content-between">
         <button class="btn btn-outline-secondary me-2" (click)="showFilters = !showFilters">Φίλτρα</button>
         <button class="btn btn-outline-secondary" (click)="clear()">Καθαρισμός</button>
     </div>
 
-    <div class="d-flex">
+    <div class="d-flex mb-3 mb-md-0">
         <label class="col-form-label me-2">Ταξινόμηση: </label>
         <select class="form-select ms-1" (change)="onChange()" [(ngModel)]="userParams.orderBy">
             <option selected [value]="''">Πιο Πρόσφατα</option>

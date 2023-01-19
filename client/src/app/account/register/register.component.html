@@ -6,6 +6,12 @@
 
     <hr>
 
+    <ul class="alert text-danger list-unstyled" *ngIf="errorMessages$ | async as errorMessages">
+        <li *ngFor="let error of errorMessages">
+            {{ error }}
+        </li>
+    </ul>
+
     <div class="row mt-4 pb-5">
         <div class="col-md-8 pb-5">
 

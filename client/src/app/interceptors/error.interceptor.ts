@@ -9,11 +9,12 @@ import {
 import { catchError, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ModalService } from '../services/modal.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router, private toastr: ToastrService) {}
+  constructor(private router: Router, private toastr: ToastrService, private modalService: ModalService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
@@ -26,7 +27,8 @@ export class ErrorInterceptor implements HttpInterceptor {
                 throw response;
               }
               else {
-                this.toastr.error(response.error.message);
+                //this.toastr.error(response.error.message);
+                this.modalService.operModal(response.error.message);
               }
               break;
 

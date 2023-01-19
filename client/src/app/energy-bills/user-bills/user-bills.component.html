@@ -28,7 +28,8 @@
                         <td>{{ bill.billNumber }}</td>
                         <td>{{ bill.type }}</td>
                         <td>{{bill.ammount | currency: 'EUR'}}</td>
-                        <td>{{bill.ammountToReturn | currency: 'EUR'}}</td>
+                        <td *ngIf="bill.status === 'Εγκριθείσα'">{{bill.ammountToReturn | currency: 'EUR'}}</td>
+                        <td *ngIf="bill.status !== 'Εγκριθείσα'"> - </td>
                         <td [ngClass]="{ 'fst-italic': bill.status === 'Εγκριθείσα' }">{{bill.status}}</td>
                     </tr>
                 </tbody>

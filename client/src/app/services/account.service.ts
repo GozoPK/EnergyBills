@@ -25,8 +25,8 @@ export class AccountService {
   getCurrentUser() {
     return this.http.get<User>(`${this.baseUrl}/account`).pipe(
       map(user => {
-          this.setCurrentUser(user);
-          return user;         
+        this.setCurrentUser(user);
+        return user;         
       })
     );
   }
