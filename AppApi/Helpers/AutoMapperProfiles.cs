@@ -18,7 +18,12 @@ namespace AppApi.Data
             CreateMap<UserEntity, AccountToReturnDto>();
             CreateMap<TaxisnetUserDto, AccountToReturnDto>();
 
-            CreateMap<UserBill, UserBillToReturnDto>();
+            CreateMap<UserBill, UserBillToReturnDto>()
+                .ForMember(
+                    dest => dest.Id,
+                    options => options.MapFrom(src => src.Id.ToString())
+                );
+
             CreateMap<UserBillToCreateDto, UserBill>();
         }
     }

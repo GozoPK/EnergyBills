@@ -22,14 +22,15 @@ export class UserBillsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onChange() {
-    this.userBillsService.setUserParams(this.userParams);
+  onChange(userParams: UserParams) {
+    this.userParams = userParams;
+    this.userBillsService.setUserParams(userParams);
   }
 
   pageChanged(event: any) {
     if (this.userParams && this.userParams.pageNumber != event) {
       this.userParams.pageNumber = event;
-      this.onChange();
+      this.onChange(this.userParams);
     }
   }
 

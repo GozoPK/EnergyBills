@@ -7,12 +7,13 @@ import {
 } from '@angular/common/http';
 import { EMPTY, Observable } from 'rxjs';
 import { ModalService } from '../services/modal.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
   stopRequest: boolean = false;
 
-  constructor(private modalService: ModalService) {}
+  constructor(private modalService: ModalService, private router: Router) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (request.url.includes('login')) {
@@ -23,7 +24,8 @@ export class JwtInterceptor implements HttpInterceptor {
 
     if (token) {
       if (this.isExpired(token)) {
-        this.modalService.openLoginExpiredModal();
+        const returnUrl = this.router.routerState.snapshot.url;
+        this.modalService.openLoginExpiredModal(returnUrl);
         return EMPTY;
       }
 

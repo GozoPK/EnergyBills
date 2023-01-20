@@ -52,38 +52,19 @@ namespace AppApi.Controllers
             var username = User.GetUsername();
             var user = await _userRepository.GetUserWithBillsAsync(username);
 
-            var date = DateTime.Now.AddMonths(-1);
-            var validMonth = date.Month;
-            var validYear = date.Year;
-
-            if ((int)userBillToCreate.Month != validMonth || userBillToCreate.Year != validYear)
-            {
-                return BadRequest(new ErrorResponse(400, "Λάθος καταχώρηση περιόδου λογαριασμού"));
-            }
-
-            if (userBillToCreate.Ammount <= 0)
-            {
-                return BadRequest(new ErrorResponse(400, "Όχι επαρκές ποσό λογαριασμού προς επιδότηση"));
-            }
-
-            var userBillForCheck = user.UserBills.FirstOrDefault(bill => bill.Month == userBillToCreate.Month && bill.Year == userBillToCreate.Year);
-            if (userBillForCheck != null)
-            {
-                if (userBillForCheck.Type == BillType.Both)
-                {
-                    return BadRequest(new ErrorResponse(400, "Έχετε ήδη υποβάλει αίτηση για αυτό το μήνα"));
-                } 
-                    
-                if (userBillForCheck.Type == userBillToCreate.Type || userBillToCreate.Type == BillType.Both)
-                {
-                    return BadRequest(new ErrorResponse(400, "Έχετε ήδη υποβάλει αίτηση για αυτό το τύπο λογαριασμού"));
-                }
-            }
-
             var checkExistingNumber = user.UserBills.Any(bill => bill.BillNumber == userBillToCreate.BillNumber);
             if (checkExistingNumber)
             {
                 return BadRequest(new ErrorResponse(400, "Ο αριθμός λογαριασμού υπάρχει ήδη"));
+            }
+
+            if (userBillToCreate.State == State.Submitted)
+            {
+                var validationsMessage = ApplyValidations(userBillToCreate, user);
+                if (!string.IsNullOrEmpty(validationsMessage))
+                {
+                    return BadRequest(new ErrorResponse(400, validationsMessage));
+                }
             }
 
             var userBill = _mapper.Map<UserBill>(userBillToCreate);
@@ -96,6 +77,69 @@ namespace AppApi.Controllers
             }
 
             return BadRequest(new ErrorResponse(400, "Πρόβλημα κατά την δημιουργία της αίτησης"));
+        }
+
+        [HttpPut("bills")]
+        public async Task<ActionResult<UserBillToReturnDto>> UpdateUserBill(UserBillToCreateDto userBillToCreate)
+        {
+            var username = User.GetUsername();
+            var user = await _userRepository.GetUserWithBillsAsync(username);
+
+            var userBillForUpdate = user.UserBills.FirstOrDefault(bill => bill.BillNumber == userBillToCreate.BillNumber);
+            if (userBillForUpdate == null)
+            {
+                return BadRequest(new ErrorResponse(400, "Δεν βρέθηκε αίτηση για αυτον τον αριθμό λογαριασμού"));
+            }
+
+            if (userBillToCreate.State == State.Submitted)
+            {
+                var validationsMessage = ApplyValidations(userBillToCreate, user);
+                if (!string.IsNullOrEmpty(validationsMessage))
+                {
+                    return BadRequest(new ErrorResponse(400, validationsMessage));
+                }
+            }
+
+            _mapper.Map(userBillToCreate, userBillForUpdate);
+            if (await _userRepository.SaveAllAsync())
+            {
+                return Ok(_mapper.Map<UserBillToReturnDto>(userBillForUpdate));
+            }
+
+            return BadRequest(new ErrorResponse(400, "Πρόβλημα κατά την αποθήκευση της αίτησης"));
+        }
+
+        private string ApplyValidations(UserBillToCreateDto userBillToCreate, UserEntity user)
+        {
+            var date = DateTime.Now.AddMonths(-1);
+            var validMonth = date.Month;
+            var validYear = date.Year;
+
+            if ((int)userBillToCreate.Month != validMonth || userBillToCreate.Year != validYear)
+            {
+                return "Λάθος καταχώρηση περιόδου λογαριασμού";
+            }
+
+            if (userBillToCreate.Ammount <= 0)
+            {
+                return "Όχι επαρκές ποσό λογαριασμού προς επιδότηση";
+            }
+
+            var userBillForCheck = user.UserBills.FirstOrDefault(bill => bill.Month == userBillToCreate.Month && bill.Year == userBillToCreate.Year);
+            if (userBillForCheck != null)
+            {
+                if (userBillForCheck.Type == BillType.Both)
+                {
+                    return "Έχετε ήδη υποβάλει αίτηση για αυτό το μήνα";
+                } 
+                    
+                if (userBillForCheck.Type == userBillToCreate.Type || userBillToCreate.Type == BillType.Both)
+                {
+                    return "Έχετε ήδη υποβάλει αίτηση για αυτό το τύπο λογαριασμού";
+                }
+            }
+
+            return null;
         }
     }
 }

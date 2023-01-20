@@ -1,6 +1,6 @@
-<div class="container my-5" *ngIf="pagedList$ | async as pagedList">
+<div class="my-5" *ngIf="pagedList$ | async as pagedList">
     
-    <app-filter-form></app-filter-form>
+    <app-filter-form (onUserParamsChange)="onChange($event)"></app-filter-form>
 
     <div>
         <hr>
@@ -41,7 +41,7 @@
         <app-paging 
             [totalItems]="pagedList.pagination.totalItems" 
             [itemsPerPage]="pagedList.pagination.itemsPerPage" 
-            [currentPage]="pagedList.pagination.currentPage"
+            [currentPage]="userParams.pageNumber"
             (onPageChanged)="pageChanged($event)">
         </app-paging>
     </div>

@@ -5,6 +5,7 @@ namespace AppApi.Helpers
         public string Username { get; set; }
         public string Type { get; set; }
         public string Status { get; set; }
+        public string State { get; set; }
         public int MinMonth { get; set; } = 1;
         public int MinYear { get; set; } = 2022;
         public int MaxMonth { get; set; } = DateTime.Now.Month;

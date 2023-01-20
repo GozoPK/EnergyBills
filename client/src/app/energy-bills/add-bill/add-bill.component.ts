@@ -11,6 +11,13 @@ import { UserBillsService } from 'src/app/services/user-bills.service';
   styleUrls: ['./add-bill.component.css']
 })
 export class AddBillComponent implements OnInit {
+  createFromObject = {
+    billNumber: '',
+    type: '',
+    date: new Date(),
+    ammount: 0
+  }
+
   selectTypes = [
     { value: 0, description: 'Ρεύμα'},
     { value: 1, description: 'Φυσικό Αέριο'},

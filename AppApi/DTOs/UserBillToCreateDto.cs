@@ -4,6 +4,7 @@ using AppApi.Helpers;
 namespace AppApi.DTOs
 {
     public class UserBillToCreateDto
+    
     {
         [Required]
         [MaxLength(10)]
@@ -20,5 +21,8 @@ namespace AppApi.DTOs
 
         [Required]
         public decimal Ammount { get; set; }
+
+        [Required]
+        public State State { get; set; }
     }
 }

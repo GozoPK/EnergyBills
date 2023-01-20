@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterStateSnapshot } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { map, Observable } from 'rxjs';
 import { ConfirmModalComponent } from '../shared/modals/confirm-modal/confirm-modal.component';
@@ -13,9 +13,10 @@ export class ModalService {
   modalRef = new BsModalRef<ModalComponent>();
   confirmModalRef = new BsModalRef<ConfirmModalComponent>();
 
-  constructor(private bsdModalService: BsModalService, private accountService: AccountService, private router: Router) { }
+  constructor(private bsdModalService: BsModalService, private accountService: AccountService, 
+    private router: Router) { }
 
-  openLoginExpiredModal() {
+  openLoginExpiredModal(returnUrl: string) {
     const config: ModalOptions = {
       class: 'modal-dialog-centered',
       initialState: {
@@ -26,8 +27,8 @@ export class ModalService {
 
     this.modalRef = this.bsdModalService.show(ModalComponent, config);
     this.modalRef.onHide?.subscribe(() => {
-      this.accountService.setCurrentUser(null);
-      this.router.navigate(['/home']);
+      this.accountService.logout();
+      this.router.navigate(['/login'], {queryParams: { returnUrl }});
     });
   }
 

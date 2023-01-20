@@ -2,6 +2,7 @@ namespace AppApi.DTOs
 {
     public class UserBillToReturnDto
     {
+        public string Id { get; set; }
         public string BillNumber { get; set; }
         public string Month { get; set; }
         public int Year { get; set; }
@@ -10,5 +11,6 @@ namespace AppApi.DTOs
         public string Status { get; set; }
         public string Type { get; set; }
         public DateTime DateOfCreation { get; set; }
+        public string State { get; set; }
     }
 }

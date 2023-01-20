@@ -16,6 +16,7 @@ namespace AppApi.Entities
         public Status Status { get; set; } = Status.Pending;
         public BillType Type { get; set; }
         public DateTime DateOfCreation { get; set; } = DateTime.Now;
+        public State State { get; set; } = State.Saved;
         public UserEntity UserEntity { get; set; }
         public string UserEntityId { get; set; }
     }

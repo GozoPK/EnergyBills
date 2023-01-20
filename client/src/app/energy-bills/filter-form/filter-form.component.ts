@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { selectStatus, selectType } from 'src/app/models/formSelectModels';
 import { UserParams } from 'src/app/models/userParams';
@@ -14,6 +14,7 @@ export class FilterFormComponent implements OnInit {
   userParams = new UserParams();
   selectTypes = selectType;
   selectStatuses = selectStatus;
+  @Output() onUserParamsChange = new EventEmitter<UserParams>();
 
   filterForm = this.fb.group({
     type: [''],
@@ -43,7 +44,7 @@ export class FilterFormComponent implements OnInit {
   }
 
   onChange() {
-    this.userBillsService.setUserParams(this.userParams);
+    this.onUserParamsChange.emit(this.userParams);
   }
 
   clear() {

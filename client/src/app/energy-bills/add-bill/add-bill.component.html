@@ -23,8 +23,9 @@
                 <app-date-picker [formControl]="createForm.controls['date']" [label]="'Ημερομηνία'"></app-date-picker>
             </div>           
             <div class="d-flex justify-content-center my-4">
-                <button class="btn btn-success me-2" type="submit" [disabled]="createForm.invalid">Υποβολή</button>
-                <button class="btn btn-info" type="button" (click)="clear()">Καθαρισμός</button>
+                <button class="btn btn-success me-2" type="submit" [disabled]="createForm.invalid">Υποβολή <i class="fa fa-arrow-circle-o-right"></i></button>
+                <button class="btn btn-info me-2" type="button" (click)="clear()">Αποθήκευση <i class="fa fa-floppy-o"></i></button>
+                <button class="btn btn-secondary" type="button" (click)="clear()">Καθαρισμός</button>
             </div>
         </div>
     </div>

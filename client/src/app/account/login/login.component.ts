@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Login } from 'src/app/models/login';
 import { AccountService } from 'src/app/services/account.service';
 
@@ -11,10 +10,13 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class LoginComponent implements OnInit {
   userForLogin: Login = { } as Login;
+  returnUrl: string | null;
 
   errorMessages$ = this.accountService.errorMessages$;
 
-  constructor(private accountService: AccountService, private router: Router) { }
+  constructor(private accountService: AccountService, private router: Router, private route: ActivatedRoute) { 
+    this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+  }
 
   ngOnInit(): void {
     this.accountService.setErrorMessages(null);
@@ -22,7 +24,12 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.accountService.login(this.userForLogin).subscribe({
-      next: () => this.router.navigate(['/'])
+      next: () => {
+        if (this.returnUrl)
+          this.router.navigateByUrl(this.returnUrl);
+        else 
+          this.router.navigate(['/']);
+      }
     });
   }
 

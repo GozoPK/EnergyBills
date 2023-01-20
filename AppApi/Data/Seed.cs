@@ -44,6 +44,7 @@ namespace AppApi.Data
                 bill.BillNumber = ((new Random()).Next()).ToString();
                 bill.AmmountToReturn = bill.Ammount * (decimal)0.08;
                 bill.Status = Status.Approved;
+                bill.State = State.Submitted;
 
                 userEntity.UserBills.Add(bill);
             }

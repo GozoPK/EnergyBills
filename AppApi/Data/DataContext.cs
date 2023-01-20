@@ -64,6 +64,13 @@ namespace AppApi.Data
             modelBuilder.Entity<UserBill>()
                 .Property(p => p.Year)
                 .HasColumnType("year(4)");
+
+            modelBuilder.Entity<UserBill>()
+                .Property(p => p.State)
+                .HasConversion(
+                    p => p.ToString(),
+                    p => (State)Enum.Parse(typeof(State), p)
+                );
         }
     }
 }
