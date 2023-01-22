@@ -1,4 +1,5 @@
 export interface UserBill {
+    id: string
     billNumber: string;
     month: string;
     year: number;

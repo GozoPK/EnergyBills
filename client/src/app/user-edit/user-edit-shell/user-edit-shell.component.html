@@ -1,0 +1,41 @@
+<div class="row h-100" *ngIf="currentUser$ | async as currentUser">
+
+    <div class="col-md-3">
+
+        <div class="d-flex flex-column p-3 bg-light min-height">
+            <a class="d-flex flex-column justify-content-center align-items-center mb-3 mb-md-0 link-dark text-decoration-none">
+              <img class="round mb-2" src="./assets/user.png" alt="user photo">
+              <span class="fs-4">{{ currentUser.name}}</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+              <li class="nav-item">
+                <a routerLink="profile" routerLinkActive="active" class="nav-link link-dark">
+                  Προφίλ
+                </a>
+              </li>
+              <li>
+                <a routerLink="security" routerLinkActive="active" class="nav-link link-dark">
+                  Ασφάλεια
+                </a>
+              </li>
+              <li>
+                <a routerLink="details" routerLinkActive="active" class="nav-link link-dark">
+                  Επεξεργασία
+                </a>
+              </li>
+              <li>
+                <a routerLink="bills" routerLinkActive="active" class="nav-link link-dark">
+                  Αιτήσεις
+                </a>
+              </li>
+            </ul>
+            <hr>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <router-outlet></router-outlet>
+    </div>
+
+</div>

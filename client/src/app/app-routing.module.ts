@@ -9,6 +9,7 @@ import { IsUserGuard } from './guards/is-user.guard';
 import { TaxisRegistered } from './guards/taxis-registered.guard';
 import { HomeComponent } from './intro/home/home.component';
 import { IntroComponent } from './intro/intro.component';
+import { BillsDataResolver } from './resolvers/bills-data.resolver';
 
 const routes: Routes = [
   { path: '', component: IntroComponent, 
@@ -18,6 +19,12 @@ const routes: Routes = [
       { 
         path: 'energy-bills', 
         loadChildren: () => import('./energy-bills/energy-bills.module').then(m => m.EnergyBillsModule),
+        canActivate: [IsUserGuard]
+      },
+      {
+        path: 'user',
+        loadChildren: () => import('./user-edit/user-edit.module').then(m => m.UserEditModule),
+        resolve: { savedBills: BillsDataResolver },
         canActivate: [IsUserGuard]
       },
       { path: '', redirectTo: 'home', pathMatch: 'full' }

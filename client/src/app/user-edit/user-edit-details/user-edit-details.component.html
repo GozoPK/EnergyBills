@@ -1,0 +1,12 @@
+<h3 class="pt-5 px-4 text-center text-md-start">Επεξεργασία στοιχείων</h3>
+<hr>
+<div class="row">
+    <div class="col-md-6 mb-5">
+        <form [formGroup]="userDetailsForm" (ngSubmit)="saveChanges()">
+            <app-forms-input [formControl]="userDetailsForm.controls['email']" [label]="'E-mail'" [type]="'email'"></app-forms-input>
+            <app-forms-input [formControl]="userDetailsForm.controls['phoneNumber']" [label]="'Τηλέφωνο'"></app-forms-input>
+            <app-forms-input [formControl]="userDetailsForm.controls['iban']" [label]="'IBAN'"></app-forms-input>
+            <button class="btn btn-primary mt-3" type="submit">Αποθήκευση</button>
+        </form>
+    </div>
+</div>

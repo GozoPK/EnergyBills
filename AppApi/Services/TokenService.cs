@@ -19,7 +19,7 @@ namespace AppApi.Services
             _context = context;
         }
 
-        public string CreateToken(AccountToReturnDto account)
+        public string CreateToken(UserToReturnDto account)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["AppToken:Key"]));
 

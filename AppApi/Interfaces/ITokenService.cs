@@ -5,7 +5,7 @@ namespace AppApi.Services
 {
     public interface ITokenService
     {
-        string CreateToken(AccountToReturnDto account);
+        string CreateToken(UserToReturnDto account);
         string CreateToken(TaxisnetUserDto user);
     }
 }

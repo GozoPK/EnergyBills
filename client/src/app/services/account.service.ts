@@ -68,16 +68,25 @@ export class AccountService {
     );
   }
 
-  setCurrentUser(user: TaxisnetUser | User | null) {
+  changePassword(model: any) {
+    return this.http.put(`${this.baseUrl}/account/change-password`, model).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  editUser(model: any) {
+    return this.http.put<User>(`${this.baseUrl}/account`, model).pipe(
+      map(user => {
+        this.setCurrentUser(user);
+        return user;
+      }),
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  setCurrentUser(user: User | null) {
     if (user) {
-      const currentUser: User = {
-        username: user.username,
-        afm: user.afm,
-        token: user.token,
-        annualIncome: user.annualIncome
-      };
-  
-      this.currentUserSubject.next(currentUser);
+      this.currentUserSubject.next(user);
       return;
     }
     

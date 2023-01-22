@@ -4,8 +4,9 @@ export class UserParams {
     type = '';
     status = '';
     minMonth = 1;
-    maxMonth = (new Date()).getMonth()
+    maxMonth = (new Date()).getMonth() + 1
     minYear = 2022
     maxYear = (new Date()).getFullYear()
     orderBy = '';
+    state = ''
 }

@@ -46,6 +46,16 @@ namespace AppApi.Data
                 bill.Status = Status.Approved;
                 bill.State = State.Submitted;
 
+                if (bill.Month == Month.December)
+                {
+                    bill.Status = Status.Pending;
+                }
+                
+                if (bill.Year == 2023)
+                {
+                    bill.State = State.Saved;
+                }
+
                 userEntity.UserBills.Add(bill);
             }
 

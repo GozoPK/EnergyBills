@@ -1,0 +1,12 @@
+<h3 class="pt-5 px-4 text-center text-md-start">Αλλαγή κωδικού</h3>
+<hr>
+<div class="row">
+    <div class="col-md-6 mb-5">
+        <form [formGroup]="changePasswordForm" (ngSubmit)="changePassword()">
+            <app-forms-input [formControl]="changePasswordForm.controls['oldPassword']" [label]="'Παλιός Κωδικός'" [type]="'password'"></app-forms-input>
+            <app-forms-input [formControl]="changePasswordForm.controls['newPassword']" [label]="'Νέος Κωδικός'" [type]="'password'"></app-forms-input>
+            <app-forms-input [formControl]="changePasswordForm.controls['confirmPassword']" [label]="'Επιβεβαίωση Νέου Κωδικού'" [type]="'password'"></app-forms-input>
+            <button class="btn btn-primary mt-3" type="submit">Αλλαγή Κωδικού</button>
+        </form>
+    </div>
+</div>

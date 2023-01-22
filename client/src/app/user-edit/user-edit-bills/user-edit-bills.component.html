@@ -1,0 +1,38 @@
+<h3 class="pt-5 px-4 text-center text-md-start">Αποθηκευμένες Αιτήσεις</h3>
+<hr>
+
+<div>
+    <h5 class="fst-italic fw-bold px-4" *ngIf="pagedList.result && pagedList.result.length === 0">Δεν βρέθηκαν αποθηκευμένες αιτήσεις</h5>
+</div>
+
+<div class="row" *ngIf="pagedList.result && pagedList.result.length > 0">
+    <div class="col-md-11 mb-3 table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>Αριθμός Αίτησης</th>
+                    <th>Αρ. Λογαριασμού</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let bill of pagedList.result let i = index">
+                    <th>{{ i + 1 }}</th>
+                    <td>{{ bill.id }}</td>
+                    <td class="text-center">{{ bill.billNumber }}</td>
+                    <td><span class="link" (click)="editBill(bill)">Επεξεργασια</span></td>
+                    <td><span class="link" (click)="deleteBill(bill.id)">Διαγραφή</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="btn-group mb-5" *ngIf="pagedList.pagination">
+    <button class="btn btn-outline-primary" role="button" 
+        [disabled]="pagedList.pagination.currentPage === 1" (click)="pagePrevious()">Προηγούμενο</button>
+    <button class="btn btn-outline-primary" role="button" 
+        [disabled]="pagedList.pagination.currentPage === pagedList.pagination.totalPages" (click)="pageNext()">Επόμενο</button>
+</div>

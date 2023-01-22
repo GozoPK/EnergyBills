@@ -4,4 +4,5 @@ export interface CreateBill {
     year: number;
     ammount: number;
     type: number;
+    state: number;
 }

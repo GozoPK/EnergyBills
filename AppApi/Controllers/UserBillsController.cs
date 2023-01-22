@@ -13,32 +13,23 @@ namespace AppApi.Controllers
 {
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    [Route("api/user/bills")]
+    public class UserBillsController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
-        public UserController(IUserRepository userRepository, IMapper mapper)
+        private readonly IUserBillsRepository _userBillsRepository;
+        public UserBillsController(IUserBillsRepository userBillsRepository, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _userBillsRepository = userBillsRepository;
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<UserToReturnDto>> GetUser()
-        {
-            var username = User.GetUsername();
-            var user = await _userRepository.GetUserAsync(username);
-
-            return Ok(_mapper.Map<UserToReturnDto>(user));
-        }
-
-        [HttpGet("bills", Name = "GetUserBills")]
+        [HttpGet()]
         public async Task<ActionResult<IEnumerable<UserBillToReturnDto>>> GetUserBills([FromQuery] UserParams userParams)
         {
             userParams.Username = User.GetUsername();
 
-            var userBills = await _userRepository.GetUserBillsAsync(userParams);
+            var userBills = await _userBillsRepository.GetUserBillsAsync(userParams);
 
             if (userBills == null) return NotFound(new ErrorResponse(404));
 
@@ -46,11 +37,11 @@ namespace AppApi.Controllers
             return Ok(userBills);
         }
 
-        [HttpPost("bills")]
+        [HttpPost()]
         public async Task<ActionResult<UserBillToReturnDto>> CreateBillRequest(UserBillToCreateDto userBillToCreate)
         {
             var username = User.GetUsername();
-            var user = await _userRepository.GetUserWithBillsAsync(username);
+            var user = await _userBillsRepository.GetUserWithBillsAsync(username);
 
             var checkExistingNumber = user.UserBills.Any(bill => bill.BillNumber == userBillToCreate.BillNumber);
             if (checkExistingNumber)
@@ -71,7 +62,7 @@ namespace AppApi.Controllers
 
             user.UserBills.Add(userBill);
 
-            if (await _userRepository.SaveAllAsync())
+            if (await _userBillsRepository.SaveAllAsync())
             {
                 return Ok(_mapper.Map<UserBillToReturnDto>(userBill));
             }
@@ -79,11 +70,11 @@ namespace AppApi.Controllers
             return BadRequest(new ErrorResponse(400, "Πρόβλημα κατά την δημιουργία της αίτησης"));
         }
 
-        [HttpPut("bills")]
+        [HttpPut()]
         public async Task<ActionResult<UserBillToReturnDto>> UpdateUserBill(UserBillToCreateDto userBillToCreate)
         {
             var username = User.GetUsername();
-            var user = await _userRepository.GetUserWithBillsAsync(username);
+            var user = await _userBillsRepository.GetUserWithBillsAsync(username);
 
             var userBillForUpdate = user.UserBills.FirstOrDefault(bill => bill.BillNumber == userBillToCreate.BillNumber);
             if (userBillForUpdate == null)
@@ -98,15 +89,48 @@ namespace AppApi.Controllers
                 {
                     return BadRequest(new ErrorResponse(400, validationsMessage));
                 }
+                userBillForUpdate.DateOfCreation = DateTime.Now;
             }
 
             _mapper.Map(userBillToCreate, userBillForUpdate);
-            if (await _userRepository.SaveAllAsync())
+            if (!_userBillsRepository.HasChanges())
+            {
+                return NoContent();
+            }
+            
+            if (await _userBillsRepository.SaveAllAsync())
             {
                 return Ok(_mapper.Map<UserBillToReturnDto>(userBillForUpdate));
             }
 
             return BadRequest(new ErrorResponse(400, "Πρόβλημα κατά την αποθήκευση της αίτησης"));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteBill(string id)
+        {
+            var username = User.GetUsername();
+            var user = await _userBillsRepository.GetUserWithBillsAsync(username);
+
+            var billToDelete = user.UserBills.FirstOrDefault(bill => bill.Id.ToString() == id);
+
+            if (billToDelete == null)
+            {
+                return BadRequest(new ErrorResponse(400, "Δεν βρέθηκε ο λογαριασμός"));
+            }
+
+            if (billToDelete.State == State.Submitted) 
+            {
+                return BadRequest(new ErrorResponse(400, "Π λογαριασμός έχει ήδη υποβληθεί. Η διαγραφή απέτυχε"));
+            }
+
+            user.UserBills.Remove(billToDelete);
+            if (await _userBillsRepository.SaveAllAsync())
+            {
+                return Ok();
+            }
+
+            return BadRequest(new ErrorResponse(400, "Πρόβλημα κατά την διαγραφή της αίτησης")); 
         }
 
         private string ApplyValidations(UserBillToCreateDto userBillToCreate, UserEntity user)
@@ -125,7 +149,8 @@ namespace AppApi.Controllers
                 return "Όχι επαρκές ποσό λογαριασμού προς επιδότηση";
             }
 
-            var userBillForCheck = user.UserBills.FirstOrDefault(bill => bill.Month == userBillToCreate.Month && bill.Year == userBillToCreate.Year);
+            var userBillForCheck = user.UserBills.FirstOrDefault(bill => bill.Month == userBillToCreate.Month && bill.Year == userBillToCreate.Year
+                && bill.State == State.Submitted);
             if (userBillForCheck != null)
             {
                 if (userBillForCheck.Type == BillType.Both)

@@ -36,7 +36,7 @@ namespace AppApi.Extensions
             services.AddCors();
             services.AddHttpClient();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserBillsRepository, UserBillsRepository>();
             services.AddScoped<IBillsRepository, BillsRepository>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IHttpService, HttpService>();

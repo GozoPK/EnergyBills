@@ -1,0 +1,28 @@
+<div class="modal-header border-bottom border-0">
+    <h4 class="modal-title pull-left">Επεξεργασία</h4> 
+    <button type="button" class="btn-close close pull-right" (click)="modalRef.hide()"></button>
+</div>
+<div class="modal-body d-flex flex-column justify-content-between align-items-center">
+    <ul class="alert text-danger text-center list-unstyled" *ngIf="errorMessages$ | async as errorMessages">
+        <li *ngFor="let error of errorMessages">
+            {{ error }}
+        </li>
+    </ul>
+    
+    <form [formGroup]="createForm" (ngSubmit)="create()">
+        <div class="d-flex flex-wrap flex-column justify-content-center mt-2">
+            <fieldset disabled>
+                <app-forms-input [formControl]="$any(createForm.controls['billNumber'])" [label]="'Αρ. Λογαριασμού'" [type]="'text'"></app-forms-input>
+            </fieldset>
+            <app-forms-input [formControl]="$any(createForm.controls['ammount'])" [label]="'Ποσό'" [type]="'number'"></app-forms-input>
+            <app-forms-select [formControl]="$any(createForm.controls['type'])" [label]="'Τύπος Λογαριασμού'" [header]="'Επιλέξτε Τύπο'" [options]="selectTypes"></app-forms-select>
+            <div class="my-3">
+                <app-date-picker [formControl]="$any(createForm.controls['date'])" [label]="'Ημερομηνία'"></app-date-picker>
+            </div>           
+            <div class="d-flex justify-content-center my-4">
+                <button class="btn btn-success me-2" type="submit" [disabled]="createForm.invalid">Υποβολή <i class="fa fa-arrow-circle-o-right"></i></button>
+                <button class="btn btn-info me-2" type="button" (click)="save()" [disabled]="createForm.pristine">Αποθήκευση <i class="fa fa-floppy-o"></i></button>
+            </div>
+        </div>
+    </form>
+</div>

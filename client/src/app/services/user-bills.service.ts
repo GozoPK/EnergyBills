@@ -34,6 +34,7 @@ export class UserBillsService {
     params = params.append('minYear', userParams.minYear);
     params = params.append('maxMonth', userParams.maxMonth);
     params = params.append('maxYear', userParams.maxYear);
+    params = params.append('state', userParams.state);
 
     return this.http.get<UserBill[]>(`${this.baseUrl}/user/bills`, { observe: 'response', params}).pipe(
       map(response => {
@@ -48,6 +49,18 @@ export class UserBillsService {
 
   createBill(billForm: CreateBill) {
     return this.http.post(`${this.baseUrl}/user/bills`, billForm).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  updateBill(billForm: CreateBill) {
+    return this.http.put(`${this.baseUrl}/user/bills`, billForm).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  deleteBill(id: string) {
+    return this.http.delete(`${this.baseUrl}/user/bills/${id}`).pipe(
       catchError(error => this.handleError(error))
     );
   }

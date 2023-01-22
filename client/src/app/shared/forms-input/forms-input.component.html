@@ -7,6 +7,7 @@
     <label for="floatingInput">{{ label }}</label>
 
     <div class="invalid-feedback" *ngIf="control.errors?.['required']">Το πεδίο είναι απαραίτητο</div>
+    <div class="invalid-feedback" *ngIf="control.errors?.['email']">Μη έγκυρο e-mail</div>
     <div class="invalid-feedback" *ngIf="control.errors?.['minlength']">Μη επαρκής αριθμός χαρακτήρων</div>
     <div class="invalid-feedback" *ngIf="control.errors?.['maxlength']">Υπερβήκατε το όριο των επιτρεπόμενων χαρακτήρων</div>
     <div class="invalid-feedback" *ngIf="control.errors?.['notMatching']">Οι κωδικοί δεν ταιριάζουν</div>

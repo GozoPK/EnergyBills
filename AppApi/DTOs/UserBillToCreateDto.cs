@@ -6,8 +6,8 @@ namespace AppApi.DTOs
     public class UserBillToCreateDto
     
     {
-        [Required]
-        [MaxLength(10)]
+        [Required(ErrorMessage = "Το πεδίο «Αριθμός Λογαριασμού» είναι απαραίτητο")]
+        [StringLength(10, ErrorMessage = "Μη έγκυρος αριθμός λογαριασμού")]
         public string BillNumber { get; set; }
 
         [Required]
@@ -19,7 +19,8 @@ namespace AppApi.DTOs
         [Required]
         public BillType Type { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Το πεδίο «Ποσό» είναι απαραίτητο")]
+        [Range(0, 9999999999999.99, ErrorMessage = "Μη έγκυρο ποσό")]
         public decimal Ammount { get; set; }
 
         [Required]

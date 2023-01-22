@@ -33,18 +33,59 @@ namespace AppApi.Controllers
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
-        public async Task<ActionResult<AccountToReturnDto>> GetCurrentUser()
+        public async Task<ActionResult<UserToReturnDto>> GetCurrentUser()
         {
             var username = User.GetUsername();
 
             var user =  await _userManager.FindByNameAsync(username);
 
-            return Ok(_mapper.Map<AccountToReturnDto>(user));
+            return Ok(_mapper.Map<UserToReturnDto>(user));
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPut]
+        public async Task<ActionResult<UserToReturnDto>> EditUser(UserForUpdateDto userForUpdate)
+        {
+            var username = User.GetUsername();
+
+            var user =  await _userManager.FindByNameAsync(username);
+
+            _mapper.Map(userForUpdate, user);
+
+           var result = await  _userManager.UpdateAsync(user);
+           if (result.Succeeded)
+           {
+                return Ok(_mapper.Map<UserToReturnDto>(user));
+           }
+
+           return BadRequest(new ErrorResponse(400, "Πρόβλημα στην αποθήκευση χρήστη"));
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPut("change-password")]
+        public async Task<ActionResult> ChangePassword(ChangePasswordDto changePassword)
+        {
+            var username = User.GetUsername();
+
+            var user =  await _userManager.FindByNameAsync(username);
+
+            if (changePassword.OldPassword == changePassword.NewPassword)
+            {
+                return BadRequest(new ErrorResponse(400, "Ο νέος κωδικός είναι ίδιος με τον παλιό"));
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return BadRequest(new ErrorResponse(400, "Πρόβλημα κατά την αλλαγή κωδικού"));
         }
 
         [Authorize(AuthenticationSchemes = "register")]
         [HttpPost("register")]
-        public async Task<ActionResult<AccountToReturnDto>> Register(UserForRegisterDto userForRegister)
+        public async Task<ActionResult<UserToReturnDto>> Register(UserForRegisterDto userForRegister)
         {
             try
             {
@@ -67,7 +108,7 @@ namespace AppApi.Controllers
 
                 if (!result.Succeeded) return BadRequest(new ErrorResponse(400));
 
-                var account = _mapper.Map<AccountToReturnDto>(user);
+                var account = _mapper.Map<UserToReturnDto>(user);
                 account.Token = _tokenService.CreateToken(account);
                 return Ok(account);
             }
@@ -79,7 +120,7 @@ namespace AppApi.Controllers
 
         [HttpPost("login")]
         [ProducesResponseType(typeof(AuthenticationErrorResponse), StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<AccountToReturnDto>> Login(UserForLoginDto login)
+        public async Task<ActionResult<UserToReturnDto>> Login(UserForLoginDto login)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(user => user.UserName == login.Username);
 
@@ -92,7 +133,7 @@ namespace AppApi.Controllers
 
             if (!result.Succeeded) return Unauthorized(new AuthenticationErrorResponse(401, "Λανθασμένο όνομα χρήστη ή κωδικού."));
 
-            var account = _mapper.Map<AccountToReturnDto>(user);
+            var account = _mapper.Map<UserToReturnDto>(user);
             account.Token = _tokenService.CreateToken(account);
 
             return Ok(account);

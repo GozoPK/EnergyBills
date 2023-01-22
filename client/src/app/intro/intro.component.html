@@ -1,12 +1,10 @@
 <div class="d-flex flex-column justify-content-between" style="height: 100vh;">
   
-  <div class="flex-flex column">
-    <app-navbar></app-navbar>
+  <app-navbar></app-navbar>
 
-    <div class="container inside">
-        <router-outlet></router-outlet>
-    </div>
-  </div>  
+  <div class="container inside flex-grow-1">
+      <router-outlet></router-outlet>
+  </div>
 
   <footer class="bg-primary text-dark text-center text-lg-start fs-5">
       <!-- Copyright -->

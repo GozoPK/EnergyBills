@@ -14,6 +14,8 @@ import { PagingComponent } from './paging/paging.component';
 import { FormsSelectComponent } from './forms-select/forms-select.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.component';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { EditBillModalComponent } from './modals/edit-bill-modal/edit-bill-modal.component';
 
 
 
@@ -25,6 +27,7 @@ import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.comp
     FormsSelectComponent,
     DatePickerComponent,
     ConfirmModalComponent,
+    EditBillModalComponent,
   ],
   imports: [
     CommonModule,
@@ -40,7 +43,8 @@ import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.comp
     NgxSpinnerModule.forRoot({
       type: 'ball-spin-clockwise'
     }),
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    ButtonsModule.forRoot()
   ],
   exports: [
     NgbCollapseModule,
@@ -56,7 +60,8 @@ import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.comp
     BsDatepickerModule,
     PagingComponent,
     FormsSelectComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    ButtonsModule
   ]
 })
 export class SharedModule { }

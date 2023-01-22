@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidatorFn, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { CreateBill } from 'src/app/models/createBill';
 import { ModalService } from 'src/app/services/modal.service';
 import { UserBillsService } from 'src/app/services/user-bills.service';
@@ -11,13 +10,6 @@ import { UserBillsService } from 'src/app/services/user-bills.service';
   styleUrls: ['./add-bill.component.css']
 })
 export class AddBillComponent implements OnInit {
-  createFromObject = {
-    billNumber: '',
-    type: '',
-    date: new Date(),
-    ammount: 0
-  }
-
   selectTypes = [
     { value: 0, description: 'Ρεύμα'},
     { value: 1, description: 'Φυσικό Αέριο'},
@@ -39,6 +31,28 @@ export class AddBillComponent implements OnInit {
   }
 
   create() {
+    const billForCreation = this.prepareBillForCreation();
+    billForCreation.state = 1;
+
+    this.userBillsService.createBill(billForCreation).subscribe({
+      next: () => this.modalService.operModal('Επιτυχής Υποβολή')
+    });
+
+    this.clear();
+  }
+
+  save() {
+    const billForCreation = this.prepareBillForCreation();
+    billForCreation.state = 0;
+
+    this.userBillsService.createBill(billForCreation).subscribe({
+      next: () => this.modalService.operModal('Επιτυχής Αποθήκευση')
+    });
+
+    this.clear();
+  }
+
+  prepareBillForCreation() {
     let date = this.createForm.controls['date'].value;
     let month = 1;
     if (date) month = date.getMonth() + 1;
@@ -52,14 +66,10 @@ export class AddBillComponent implements OnInit {
       type: type,
       month: month,
       year: date?.getFullYear(),
-      ammount: this.createForm.controls['ammount'].value
+      ammount: this.createForm.controls['ammount'].value,
     } as CreateBill;
 
-    this.userBillsService.createBill(billForCreation).subscribe({
-      next: () => this.modalService.operModal('Επιτυχής Υποβολή')
-    });
-
-    this.clear();
+    return billForCreation;
   }
 
   mustBeGreaterThanZero(): ValidatorFn {

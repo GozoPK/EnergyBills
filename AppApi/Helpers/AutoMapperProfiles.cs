@@ -15,8 +15,8 @@ namespace AppApi.Data
                     dest => dest.Name,
                     options => options.MapFrom(src => $"{src.FirstName} {src.LastName}"));
 
-            CreateMap<UserEntity, AccountToReturnDto>();
-            CreateMap<TaxisnetUserDto, AccountToReturnDto>();
+            CreateMap<UserForUpdateDto, UserEntity>();
+            CreateMap<TaxisnetUserDto, UserToReturnDto>();
 
             CreateMap<UserBill, UserBillToReturnDto>()
                 .ForMember(

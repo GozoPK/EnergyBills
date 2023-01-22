@@ -10,12 +10,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppApi.Services
 {
-    public class UserRepository : IUserRepository
+    public class UserBillsRepository : IUserBillsRepository
     {
         private readonly DataContext _context;
         private readonly UserManager<UserEntity> _userManager;
         private readonly IMapper _mapper;
-        public UserRepository(UserManager<UserEntity> userManager, DataContext context, IMapper mapper)
+        public UserBillsRepository(UserManager<UserEntity> userManager, DataContext context, IMapper mapper)
         {
             _mapper = mapper;
             _userManager = userManager;
@@ -47,6 +47,11 @@ namespace AppApi.Services
             var list = _mapper.Map<IEnumerable<UserBillToReturnDto>>(userBills);
 
             return new PagedList<UserBillToReturnDto>(list, userParams.PageNumber, userParams.PageSize, totalCount);
+        }
+
+        public bool HasChanges()
+        {
+            return _context.ChangeTracker.HasChanges();
         }
 
         public async Task<bool> SaveAllAsync()

@@ -13,6 +13,6 @@ namespace AppApi.DTOs
         public string City { get; set; }
         public decimal AnnualIncome { get; set; }
         public string Iban { get; set; }
-        public IEnumerable<UserBillToReturnDto> UserBills { get; set; }
+        public string Token { get; set; }
     }
 }

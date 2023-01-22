@@ -130,5 +130,29 @@
 	  "Year": 2022,
 	  "Ammount": 55.00,
 	  "Type": 1
+	},
+	{
+	  "Month": 12,
+	  "Year": 2022,
+	  "Ammount": 62.00,
+	  "Type": 0	
+	},
+	{
+	  "Month": 12,
+	  "Year": 2022,
+	  "Ammount": 55.00,
+	  "Type": 1
+	},
+	{
+	  "Month": 1,
+	  "Year": 2023,
+	  "Ammount": 62.00,
+	  "Type": 0	
+	},
+	{
+	  "Month": 1,
+	  "Year": 2023,
+	  "Ammount": 55.00,
+	  "Type": 1
 	}
 ]
