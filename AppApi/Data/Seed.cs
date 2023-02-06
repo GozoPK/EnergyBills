@@ -10,9 +10,20 @@ namespace AppApi.Data
 {
     public class Seed
     {
-        public static async Task SeedUserBills(DataContext context, UserManager<UserEntity> userManager, IMapper mapper)
+        public static async Task SeedUserBills(DataContext context, UserManager<UserEntity> userManager, RoleManager<UserRole> roleManager, IMapper mapper)
         {
             if (await context.Users.AnyAsync()) return;
+
+            var roles = new List<UserRole>()
+            {
+                new UserRole{ Name = "Member" },
+                new UserRole{ Name = "Admin" }
+            };
+
+            foreach (var role in roles)
+            {
+                await roleManager.CreateAsync(role);
+            }
 
             var userDto = new UserForRegisterDto
             {
@@ -49,17 +60,36 @@ namespace AppApi.Data
                 if (bill.Month == Month.December)
                 {
                     bill.Status = Status.Pending;
+                    bill.AmmountToReturn = 0;
                 }
                 
                 if (bill.Year == 2023)
                 {
                     bill.State = State.Saved;
+                    bill.Status = Status.Pending;
+                    bill.AmmountToReturn = 0;
                 }
 
                 userEntity.UserBills.Add(bill);
             }
 
-            var result = await userManager.CreateAsync(userEntity, userDto.Password);
+            var memberRole = await roleManager.FindByNameAsync("Member");
+            userEntity.RoleId = memberRole.Id;
+
+            await userManager.CreateAsync(userEntity, userDto.Password);
+            await userManager.AddToRoleAsync(userEntity, "Member");
+
+            var admin = new UserEntity
+            {
+                UserName = "admin",
+                Email = "admin@email.com"
+            };
+
+            var adminRole = await roleManager.FindByNameAsync("Admin");
+            admin.RoleId = adminRole.Id;
+
+            await userManager.CreateAsync(admin, userDto.Password);
+            await userManager.AddToRoleAsync(admin, "Admin");
         }
     }
 }

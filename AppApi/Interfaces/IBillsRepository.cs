@@ -6,7 +6,7 @@ namespace AppApi.Services
     public interface IBillsRepository
     {
         Task<IEnumerable<UserBill>> GetBillsAsync();
-        Task UpdateBillRequest(string username, UserBillToCreateDto userBillToCreate);
+        Task<UserBill> GetBillByIdAsync(string id);
         Task<bool> SaveAllAsync();
     }
 }

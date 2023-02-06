@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppApi.Data
 {
-    public class DataContext : IdentityDbContext<UserEntity>
+    public class DataContext : IdentityDbContext<UserEntity, UserRole, string>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -71,6 +71,12 @@ namespace AppApi.Data
                     p => p.ToString(),
                     p => (State)Enum.Parse(typeof(State), p)
                 );
+
+            modelBuilder.Entity<UserRole>()
+                .HasMany(p => p.Users)
+                .WithOne(p => p.Role)
+                .HasForeignKey(p => p.RoleId)
+                .IsRequired();
         }
     }
 }

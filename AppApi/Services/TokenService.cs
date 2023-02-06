@@ -26,7 +26,8 @@ namespace AppApi.Services
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, account.Username),
-                new Claim(ClaimTypes.Email, account.Email)
+                new Claim(ClaimTypes.Email, account.Email),
+                new Claim(ClaimTypes.Role, account.Role)
             };
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

@@ -15,6 +15,8 @@ namespace AppApi.Extensions
             {
                 // Options go here
             })
+            .AddRoles<UserRole>()
+            .AddRoleManager<RoleManager<UserRole>>()
             .AddEntityFrameworkStores<DataContext>()
             .AddSignInManager<SignInManager<UserEntity>>();
 
@@ -45,6 +47,12 @@ namespace AppApi.Extensions
                         ClockSkew = TimeSpan.Zero
                     };
                 });
+
+            services.AddAuthorization(options => 
+            {
+                options.AddPolicy("RequireMemberRole", policy => policy.RequireRole("Member"));
+                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+            });
 
             return services;
         }

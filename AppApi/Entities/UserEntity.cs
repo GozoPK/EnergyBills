@@ -25,6 +25,8 @@ namespace AppApi.Entities
         [MinLength(27)]
         [MaxLength(27)]
         public string Iban { get; set; }
+        public string RoleId { get; set; }
+        public UserRole Role { get; set; }
         public ICollection<UserBill> UserBills { get; set; } = new List<UserBill>();
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AppApi.Controllers
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "RequireMemberRole")]
     [Route("api/user/bills")]
     public class UserBillsController : ControllerBase
     {
@@ -42,6 +42,11 @@ namespace AppApi.Controllers
         {
             var username = User.GetUsername();
             var user = await _userBillsRepository.GetUserWithBillsAsync(username);
+
+            if (user.AnnualIncome > new decimal(22.000))
+            {
+                return BadRequest(new ErrorResponse(400, "Δεν πληρείτε τις απαραίτητες προυποθέσεις για την επιδότηση."));
+            }
 
             var checkExistingNumber = user.UserBills.Any(bill => bill.BillNumber == userBillToCreate.BillNumber);
             if (checkExistingNumber)

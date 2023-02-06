@@ -44,9 +44,10 @@ try
 {
     var context = services.GetRequiredService<DataContext>();
     var userManager = services.GetRequiredService<UserManager<UserEntity>>();
+    var roleManager = services.GetRequiredService<RoleManager<UserRole>>();
     var mapper = services.GetRequiredService<IMapper>();
     await context.Database.MigrateAsync();
-    await Seed.SeedUserBills(context, userManager, mapper);
+    await Seed.SeedUserBills(context, userManager, roleManager, mapper);
 }
 catch (Exception ex)
 {

@@ -21,9 +21,11 @@ namespace AppApi.Controllers
         private readonly ITokenService _tokenService;
         private readonly UserManager<UserEntity> _userManager;
         private readonly SignInManager<UserEntity> _signInManager;
+        private readonly RoleManager<UserRole> _roleManager;
         public AccountController(UserManager<UserEntity> userManager, IMapper mapper, IHttpService httpService,
-            SignInManager<UserEntity> signInManager, ITokenService tokenService)
+            SignInManager<UserEntity> signInManager, ITokenService tokenService, RoleManager<UserRole> roleManager)
         {
+            _roleManager = roleManager;
             _signInManager = signInManager;
             _userManager = userManager;
             _tokenService = tokenService;
@@ -37,7 +39,7 @@ namespace AppApi.Controllers
         {
             var username = User.GetUsername();
 
-            var user =  await _userManager.FindByNameAsync(username);
+            var user =  await _userManager.FindByNameWithRoleAsync(username);
 
             return Ok(_mapper.Map<UserToReturnDto>(user));
         }
@@ -48,7 +50,7 @@ namespace AppApi.Controllers
         {
             var username = User.GetUsername();
 
-            var user =  await _userManager.FindByNameAsync(username);
+            var user =  await _userManager.FindByNameWithRoleAsync(username);
 
             _mapper.Map(userForUpdate, user);
 
@@ -104,11 +106,19 @@ namespace AppApi.Controllers
 
                 var user = _mapper.Map<UserEntity>(userForRegister);
 
+                var role = await _roleManager.FindByNameAsync("Member");
+                user.RoleId = role.Id;
+
                 var result = await _userManager.CreateAsync(user, userForRegister.Password);
 
                 if (!result.Succeeded) return BadRequest(new ErrorResponse(400));
 
+                var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+
+                if (!roleResult.Succeeded) return BadRequest(new ErrorResponse(400));
+
                 var account = _mapper.Map<UserToReturnDto>(user);
+                account.Role = role.Name;
                 account.Token = _tokenService.CreateToken(account);
                 return Ok(account);
             }
@@ -122,7 +132,7 @@ namespace AppApi.Controllers
         [ProducesResponseType(typeof(AuthenticationErrorResponse), StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<UserToReturnDto>> Login(UserForLoginDto login)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(user => user.UserName == login.Username);
+            var user = await _userManager.FindByNameWithRoleAsync(login.Username);
 
             if (user == null) 
             {

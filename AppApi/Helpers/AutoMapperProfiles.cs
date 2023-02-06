@@ -13,7 +13,11 @@ namespace AppApi.Data
             CreateMap<UserEntity, UserToReturnDto>()
                 .ForMember(
                     dest => dest.Name,
-                    options => options.MapFrom(src => $"{src.FirstName} {src.LastName}"));
+                    options => options.MapFrom(src => $"{src.FirstName} {src.LastName}"))
+                .ForMember(
+                    dest => dest.Role,
+                    options => options.MapFrom(src => src.Role.Name)
+                );
 
             CreateMap<UserForUpdateDto, UserEntity>();
             CreateMap<TaxisnetUserDto, UserToReturnDto>();
@@ -25,6 +29,12 @@ namespace AppApi.Data
                 );
 
             CreateMap<UserBillToCreateDto, UserBill>();
+
+            CreateMap<UserBill, BillInfoForAdminToReturnDto>()
+                .ForMember(
+                    dest => dest.User,
+                    options => options.MapFrom(src => src.UserEntity)
+                );
         }
     }
 }

@@ -17,14 +17,14 @@ namespace AppApi.Services
         public async Task<IEnumerable<UserBill>> GetBillsAsync()
         {
             return await _context.Bills
-                .Where(bill => bill.Status  == Status.Pending)
+                .Where(bill => bill.Status  == Status.Pending && bill.State == State.Submitted)
                 .OrderBy(bill => bill.DateOfCreation)
                 .ToListAsync();
         }
 
-        public Task UpdateBillRequest(string username, UserBillToCreateDto userBillToCreate)
+        public async Task<UserBill> GetBillByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _context.Bills.Include(bill => bill.UserEntity).FirstOrDefaultAsync(bill => bill.Id.ToString() == id);
         }
 
         public async Task<bool> SaveAllAsync()
