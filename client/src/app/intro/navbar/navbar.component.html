@@ -9,22 +9,27 @@
             <li class="nav-item">
               <a class="nav-link" routerLink="/home" routerLinkActive="active" (click)="isMenuCollapsed = true">Αρχική</a>
             </li>
-            <ng-container *ngIf="currentUser$ | async">
-            <li class="nav-item">
+            <ng-container *ngIf="currentUser$ | async as user">
+            <li class="nav-item" *ngIf="user.role === 'Member'">
               <a class="nav-link" routerLink="/energy-bills" routerLinkActive="active" (click)="isMenuCollapsed = true" [routerLinkActiveOptions]="{exact: true}">Αιτήματα</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="user.role === 'Member'">
               <a class="nav-link" routerLink="/energy-bills/add-bill" routerLinkActive="active" (click)="isMenuCollapsed = true">Νέο Αίτημα</a>
+            </li>
+            <li class="nav-item" *ngIf="user.role === 'Admin'">
+              <a class="nav-link" routerLink="/admin" routerLinkActive="active" (click)="isMenuCollapsed = true">Διαχείριση</a>
             </li>
             </ng-container>
         </ul>
 
-        <div class="dropdown" *ngIf="currentUser$ | async" dropdown>
+        <div class="dropdown" *ngIf="currentUser$ | async as user" dropdown>
           <img class="round" src="./assets/user.png" alt="user photo" *ngIf="isMenuCollapsed">
           <a class="dropdown-toggle text-light text-decoration-none ms-md-2" dropdownToggle>Ο Λογαριασμός μου</a>
           <div class="dropdown-menu" *dropdownMenu>
-            <a class="dropdown-item" routerLink="/user">Επεξεργασία</a>
-            <div class="dropdown-divider"></div>
+            <ng-container *ngIf="user.role === 'Member'">
+              <a class="dropdown-item" routerLink="/user">Επεξεργασία</a>
+              <div class="dropdown-divider"></div>
+            </ng-container>
             <a class="dropdown-item" (click)="logout()">Αποσύνδεση</a>
           </div>
         </div>

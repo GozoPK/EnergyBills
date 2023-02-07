@@ -2,6 +2,7 @@ using AppApi.Data;
 using AppApi.DTOs;
 using AppApi.Entities;
 using AppApi.Helpers;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppApi.Services
@@ -9,17 +10,25 @@ namespace AppApi.Services
     public class BillsRepository : IBillsRepository
     {
         private readonly DataContext _context;
-        public BillsRepository(DataContext context)
+        private readonly IMapper _mapper;
+        public BillsRepository(DataContext context, IMapper mapper)
         {          
+            _mapper = mapper;
             _context = context;
         }
 
-        public async Task<IEnumerable<UserBill>> GetBillsAsync()
+        public async Task<PagedList<UserBillToReturnDto>> GetBillsAsync(UserParams userParams)
         {
-            return await _context.Bills
-                .Where(bill => bill.Status  == Status.Pending && bill.State == State.Submitted)
-                .OrderBy(bill => bill.DateOfCreation)
-                .ToListAsync();
+            var query = _context.Bills
+                .Where(bill => bill.Status == Status.Pending && bill.State == State.Submitted)
+                .OrderByDescending((bill => bill.DateOfCreation));
+
+            var totalCount = await query.CountAsync();
+            var bills = await query.Skip((userParams.PageNumber -1) * userParams.PageSize).Take(userParams.PageSize).ToListAsync();
+
+            var billsList = _mapper.Map<IEnumerable<UserBillToReturnDto>>(bills);
+
+            return new PagedList<UserBillToReturnDto>(billsList, userParams.PageNumber, userParams.PageSize, totalCount);
         }
 
         public async Task<UserBill> GetBillByIdAsync(string id)

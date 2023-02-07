@@ -1,0 +1,35 @@
+<div class="row h-100">
+
+    <div class="col-md-3">
+
+        <div class="d-flex flex-column p-3 bg-light min-height">
+            <a class="d-flex flex-column justify-content-center align-items-center mb-3 mb-md-0 link-dark text-decoration-none">
+              <span class="fs-4 text-center py-4"><strong>Πάνελ Λειτουργιών Διαχειριστή</strong></span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+              <li class="nav-item mb-2">
+                <a routerLink="bills" routerLinkActive="active" class="nav-link link-dark">
+                  Διαχείριση Αιτήσεων
+                </a>
+              </li>
+              <li class="nav-item mb-2">
+                <a routerLink="create" routerLinkActive="active" class="nav-link link-dark">
+                  Δημιουργία Χρήστη
+                </a>
+              </li>
+              <li class="nav-item mb-2">
+                <a routerLink="change-password" routerLinkActive="active" class="nav-link link-dark">
+                  Αλλαγή Κωδικού
+                </a>
+              </li>
+            </ul>
+            <hr>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <router-outlet></router-outlet>
+    </div>
+
+</div>

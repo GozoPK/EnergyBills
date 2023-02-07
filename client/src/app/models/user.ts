@@ -10,5 +10,6 @@ export interface User {
     city: string;
     annualIncome: number;
     iban: string;
+    role: string;
     token: string;
 }

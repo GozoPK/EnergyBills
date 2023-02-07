@@ -11,20 +11,23 @@ import { UserBillsService } from 'src/app/services/user-bills.service';
 export class UserBillsComponent implements OnInit {
   userParams = new UserParams();
 
-  pagedList$ = this.userBillsService.userParams$.pipe(
-    switchMap(params => this.userBillsService.getUserBills(params).pipe(
-      map(response => response ? response : null)
-    ))
-  );
+  pagedList$ = this.userBillsService.pagedList$;
 
   constructor(private userBillsService: UserBillsService) { }
 
   ngOnInit(): void {
+    this.loadUserBills(this.userParams);
+  }
+
+  loadUserBills(userParams: UserParams) {
+    this.userBillsService.getUserBills(userParams).subscribe({
+      next: response => this.userBillsService.setPagedList(response)
+    });
   }
 
   onChange(userParams: UserParams) {
     this.userParams = userParams;
-    this.userBillsService.setUserParams(userParams);
+    this.loadUserBills(userParams);
   }
 
   pageChanged(event: any) {

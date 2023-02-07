@@ -43,7 +43,7 @@ namespace AppApi.Controllers
             var username = User.GetUsername();
             var user = await _userBillsRepository.GetUserWithBillsAsync(username);
 
-            if (user.AnnualIncome > new decimal(22.000))
+            if (user.AnnualIncome > new decimal(22000.00))
             {
                 return BadRequest(new ErrorResponse(400, "Δεν πληρείτε τις απαραίτητες προυποθέσεις για την επιδότηση."));
             }

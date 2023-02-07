@@ -1,10 +1,14 @@
-<h3 class="pt-5 px-4 text-center text-md-start">Αποθηκευμένες Αιτήσεις</h3>
+<h3 class="pt-5 px-4 text-center text-md-start">Διαχείριση Αιτήσεων</h3>
 <hr>
 
 <ng-container *ngIf="pagedList$ | async as pagedList">
 
 <div>
-    <h5 class="fst-italic fw-bold px-4" *ngIf="pagedList.result && pagedList.result.length === 0">Δεν βρέθηκαν αποθηκευμένες αιτήσεις</h5>
+    <h5 class="fst-italic fw-bold px-4" *ngIf="pagedList.result && pagedList.result.length === 0">Δεν βρέθηκαν αιτήσεις</h5>
+</div>
+
+<div>
+    <h5 class="fst-italic fw-bold px-4"></h5>
 </div>
 
 <div class="row" *ngIf="pagedList.result && pagedList.result.length > 0">
@@ -15,17 +19,19 @@
                     <th>#</th>
                     <th>Αριθμός Αίτησης</th>
                     <th>Αρ. Λογαριασμού</th>
-                    <th></th>
-                    <th></th>
+                    <th>Τύπος</th>
+                    <th>Ποσό</th>
+                    <th>Ημερομηνία</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let bill of pagedList.result let i = index">
+                <tr role="button" *ngFor="let bill of pagedList.result let i = index" [routerLink]="bill.id">
                     <th>{{ i + 1 }}</th>
                     <td>{{ bill.id }}</td>
-                    <td class="text-center">{{ bill.billNumber }}</td>
-                    <td><span class="link" (click)="editBill(bill)">Επεξεργασια</span></td>
-                    <td><span class="link" (click)="deleteBill(bill.id)">Διαγραφή</span></td>
+                    <td>{{ bill.billNumber }}</td>
+                    <td>{{ bill.type }}</td>
+                    <td>{{ bill.ammount | currency: 'EUR' }}</td>
+                    <td>{{ bill.dateOfCreation | date: 'd-M-y' }}</td>
                 </tr>
             </tbody>
         </table>

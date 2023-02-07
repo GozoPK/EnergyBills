@@ -5,16 +5,18 @@ import { AccountService } from 'src/app/services/account.service';
 import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
-  selector: 'app-user-edit-security',
-  templateUrl: './user-edit-security.component.html',
-  styleUrls: ['./user-edit-security.component.css']
+  selector: 'app-change-password',
+  templateUrl: './change-password.component.html',
+  styleUrls: ['./change-password.component.css']
 })
-export class UserEditSecurityComponent implements OnInit, OnDestroy {
+export class ChangePasswordComponent implements OnInit, OnDestroy {
   changePasswordForm = this.fb.group({
     oldPassword: ['', Validators.required],
     newPassword: ['', [Validators.required, Validators.minLength(10)]],
     confirmPassword: ['', [Validators.required, this.matchPasswords('newPassword')]]
   });
+
+  errorMessages$ = this.accountService.errorMessages$;
 
   sub = new Subscription();
 

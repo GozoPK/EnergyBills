@@ -5,11 +5,11 @@ import { RegisterComponent } from './account/register/register.component';
 import { TaxisnetLoginComponent } from './account/taxisnet-login/taxisnet-login.component';
 import { PageNotFoundComponent } from './errors/page-not-found/page-not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
-import { IsUserGuard } from './guards/is-user.guard';
+import { IsAdminGuard } from './guards/is-admin.guard';
+import { IsMemberGuard } from './guards/is-member.guard';
 import { TaxisRegistered } from './guards/taxis-registered.guard';
 import { HomeComponent } from './intro/home/home.component';
 import { IntroComponent } from './intro/intro.component';
-import { BillsDataResolver } from './resolvers/bills-data.resolver';
 
 const routes: Routes = [
   { path: '', component: IntroComponent, 
@@ -19,13 +19,17 @@ const routes: Routes = [
       { 
         path: 'energy-bills', 
         loadChildren: () => import('./energy-bills/energy-bills.module').then(m => m.EnergyBillsModule),
-        canActivate: [IsUserGuard]
+        canActivate: [IsMemberGuard]
       },
       {
         path: 'user',
         loadChildren: () => import('./user-edit/user-edit.module').then(m => m.UserEditModule),
-        resolve: { savedBills: BillsDataResolver },
-        canActivate: [IsUserGuard]
+        canActivate: [IsMemberGuard]
+      },
+      {
+        path: 'admin',
+        loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+        canActivate: [IsAdminGuard]
       },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ]

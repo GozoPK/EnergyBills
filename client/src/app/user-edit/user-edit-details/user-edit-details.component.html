@@ -6,7 +6,7 @@
             <app-forms-input [formControl]="userDetailsForm.controls['email']" [label]="'E-mail'" [type]="'email'"></app-forms-input>
             <app-forms-input [formControl]="userDetailsForm.controls['phoneNumber']" [label]="'Τηλέφωνο'"></app-forms-input>
             <app-forms-input [formControl]="userDetailsForm.controls['iban']" [label]="'IBAN'"></app-forms-input>
-            <button class="btn btn-primary mt-3" type="submit">Αποθήκευση</button>
+            <button class="btn btn-primary mt-3" type="submit" [disabled]="userDetailsForm.invalid || userDetailsForm.untouched">Αποθήκευση</button>
         </form>
     </div>
 </div>

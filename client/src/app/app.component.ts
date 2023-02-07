@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AccountService } from './services/account.service';
 
 @Component({
@@ -6,8 +7,10 @@ import { AccountService } from './services/account.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'Energy Bills';
+
+  sub = new Subscription();
 
   constructor(private accountService: AccountService) { }
 
@@ -15,15 +18,12 @@ export class AppComponent implements OnInit {
     const token = localStorage.getItem('token');
 
     if (token) {
-      if (!this.isExpired(token)) {
-        this.accountService.getCurrentUser().subscribe();
-      } 
+      this.sub = this.accountService.getCurrentUser().subscribe();
     } 
   }
 
-  isExpired(token: string) {
-    const expireDate = (JSON.parse(atob(token.split('.')[1]))).exp;
-    return (Math.floor((new Date).getTime() / 1000)) > expireDate;
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
   
 }

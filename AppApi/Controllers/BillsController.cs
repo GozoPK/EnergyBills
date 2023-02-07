@@ -1,6 +1,7 @@
 using AppApi.DTOs;
 using AppApi.Entities;
 using AppApi.Errors;
+using AppApi.Extensions;
 using AppApi.Helpers;
 using AppApi.Services;
 using AutoMapper;
@@ -28,11 +29,12 @@ namespace AppApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserBillToReturnDto>>> GetBills()
+        public async Task<ActionResult<IEnumerable<UserBillToReturnDto>>> GetBills([FromQuery] UserParams userParams)
         {
-            var bills = await _billsRepository.GetBillsAsync();
+            var bills = await _billsRepository.GetBillsAsync(userParams);
 
-            return Ok(_mapper.Map<IEnumerable<UserBillToReturnDto>>(bills));
+            Response.AddPaginationHeader(new PaginationHeader(bills.PageNumber, bills.PageSize, bills.TotalCount, bills.TotalPages));
+            return Ok(bills);
         }
 
         [HttpGet("{id}")]

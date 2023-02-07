@@ -77,7 +77,7 @@ namespace AppApi.Controllers
         private async Task<bool> AdminExists(AdminForCreationDto adminForCreation)
         {
             return ((await _userManager.Users.AnyAsync(user => user.UserName == adminForCreation.Username))
-                && (await _userManager.Users.AnyAsync(user => user.Email == adminForCreation.Email)));
+                || (await _userManager.Users.AnyAsync(user => user.Email == adminForCreation.Email)));
         }
     }
 }

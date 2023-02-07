@@ -1,11 +1,12 @@
 using AppApi.DTOs;
 using AppApi.Entities;
+using AppApi.Helpers;
 
 namespace AppApi.Services
 {
     public interface IBillsRepository
     {
-        Task<IEnumerable<UserBill>> GetBillsAsync();
+        Task<PagedList<UserBillToReturnDto>> GetBillsAsync(UserParams userParams);
         Task<UserBill> GetBillByIdAsync(string id);
         Task<bool> SaveAllAsync();
     }

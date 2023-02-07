@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit {
       if (user) {
         return user;
       }
-      return false;
+      return null;
     })
   );
 

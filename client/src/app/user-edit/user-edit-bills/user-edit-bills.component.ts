@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { PagedList } from 'src/app/models/pagingData';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { UserBill } from 'src/app/models/userBill';
 import { UserParams } from 'src/app/models/userParams';
 import { ModalService } from 'src/app/services/modal.service';
@@ -12,35 +10,32 @@ import { UserBillsService } from 'src/app/services/user-bills.service';
   templateUrl: './user-edit-bills.component.html',
   styleUrls: ['./user-edit-bills.component.css']
 })
-export class UserEditBillsComponent implements OnInit {
-  pagedList = new PagedList<UserBill[]>();
+export class UserEditBillsComponent implements OnInit, OnDestroy {
   userParams = new UserParams();
 
-  savedBillsChangedSubject = new BehaviorSubject<boolean>(false);
+  sub: Subscription = new Subscription();
+
+  private savedBillsChangedSubject = new BehaviorSubject<boolean>(false);
   savedBillsChanged$ = this.savedBillsChangedSubject.asObservable();
 
-  constructor(private route: ActivatedRoute, private modalService: ModalService, private userBillsService: UserBillsService) { }
+  pagedList$ = this.userBillsService.pagedList$;
+
+  constructor(private modalService: ModalService, private userBillsService: UserBillsService) { }
 
   ngOnInit(): void {
-    this.route.parent?.data.subscribe({
-      next: data => {
-        this.pagedList = data['savedBills'];
-      }
-    })
-
-    this.savedBillsChanged$.subscribe({
+    this.sub = this.savedBillsChanged$.subscribe({
       next: billsChanged => {
         if (billsChanged) {
           this.userParams.state = 'saved';
           this.loadBills(this.userParams);
         }
       }
-    })
+    });
   }
 
   loadBills(userParams: UserParams) {
     this.userBillsService.getUserBills(userParams).subscribe({
-      next: response => this.pagedList = response
+      next: response => this.userBillsService.setPagedList(response)
     })
   }
 
@@ -51,27 +46,26 @@ export class UserEditBillsComponent implements OnInit {
   }
 
   deleteBill(id: string) {
-    const index = this.pagedList.result!.findIndex(bill => bill.id === id);
     this.userBillsService.deleteBill(id).subscribe({
       next: () => {
         this.modalService.operModal("Επιτυχής διαγραφή")
-        this.pagedList.result?.splice(index, 1);
+        this.savedBillsChangedSubject.next(true);
       }
     });
   }
 
-  pageNext() {
-    if (this.pagedList.pagination) {
-      this.userParams.pageNumber = this.pagedList.pagination?.currentPage + 1;
-      this.savedBillsChangedSubject.next(true);
-    }
+  pageNext(pageNumber: number) {
+    this.userParams.pageNumber = pageNumber;
+    this.savedBillsChangedSubject.next(true);
   }
 
-  pagePrevious() {
-    if (this.pagedList.pagination) {
-      this.userParams.pageNumber = this.pagedList.pagination?.currentPage - 1;
-      this.savedBillsChangedSubject.next(true);
-    }
+  pagePrevious(pageNumber: number) {
+    this.userParams.pageNumber = pageNumber;
+    this.savedBillsChangedSubject.next(true);
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
 }

@@ -1,0 +1,19 @@
+<h3 class="pt-5 px-4 text-center text-md-start">Δημιουργία Λογαριασμού</h3>
+<hr>
+<div class="row">
+    <ul class="alert text-danger list-unstyled" *ngIf="errorMessages$ | async as errorMessages">
+        <li *ngFor="let error of errorMessages">
+            {{ error }}
+        </li>
+    </ul>
+    <div class="col-md-6 mb-5">
+        <form [formGroup]="createAdminForm" (ngSubmit)="create()">
+            <app-forms-input [formControl]="createAdminForm.controls['username']" [label]="'Ονομα Χρήστη'"></app-forms-input>
+            <app-forms-input [formControl]="createAdminForm.controls['password']" [label]="'Κωδικός'" [type]="'password'"></app-forms-input>
+            <app-forms-input [formControl]="createAdminForm.controls['confirmPassword']" [label]="'Επιβεβαίωση Κωδικού'" [type]="'password'"></app-forms-input>
+            <app-forms-input [formControl]="createAdminForm.controls['email']" [label]="'E-mail'" [type]="'email'"></app-forms-input>
+            <button class="btn btn-primary mt-3 me-2" type="submit" [disabled]="createAdminForm.invalid">Υποβολή</button>
+            <button class="btn btn-outline-primary mt-3" type="reset" (click)="reset()">Καθαρισμός</button>
+        </form>
+    </div>
+</div>

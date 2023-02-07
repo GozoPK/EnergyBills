@@ -1,3 +1,5 @@
+import { User } from './user';
+
 export interface UserBill {
     id: string
     billNumber: string;
@@ -8,4 +10,6 @@ export interface UserBill {
     status: string;
     type: string;
     dateOfCreation: Date;
+    state: string;
+    user: User;
 }

@@ -4,7 +4,7 @@ import { Login } from '../models/login';
 import { environment } from 'src/environments/environment';
 import { TaxisnetUser } from '../models/TaxisnetUser';
 import {catchError, map} from 'rxjs/operators';
-import { BehaviorSubject, EMPTY } from 'rxjs';
+import { BehaviorSubject, EMPTY, ReplaySubject } from 'rxjs';
 import { User } from '../models/user';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class AccountService {
   private errorMessagesSubject = new BehaviorSubject<string[] | null>(null);
   errorMessages$ = this.errorMessagesSubject.asObservable();
   
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  private currentUserSubject = new ReplaySubject<User | null>(1);
   currentUser$ = this.currentUserSubject.asObservable()
 
   constructor(private http: HttpClient) { }

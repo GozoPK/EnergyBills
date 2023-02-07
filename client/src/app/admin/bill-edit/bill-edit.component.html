@@ -1,0 +1,34 @@
+<h3 class="pt-5 px-4 text-center text-md-start">Στοιχεία Λογαριασμού</h3>
+<hr>
+<div class="row px-4 mb-5" *ngIf="userBill">
+    <div class="col-md-7">
+        <div class="d-flex justify-content-between mb-3">
+            <span><strong>Αριθμός Λογαριασμού</strong></span>
+            <span>{{ userBill.billNumber }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+            <span><strong>Τύπος Λογαριασμού</strong></span>
+            <span>{{ userBill.type }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+            <span><strong>Ποσό</strong></span>
+            <span>{{ userBill.ammount | currency: 'EUR' }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+            <span><strong>Α.Φ.Μ. Υπόχρεου</strong></span>
+            <span>{{ userBill.user.afm }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+            <span><strong>Ονοματεπώνυμο</strong></span>
+            <span>{{ userBill.user.name }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+            <span><strong>Εισόδημα</strong></span>
+            <span>{{ userBill.user.annualIncome | currency: 'EUR' }}</span>
+        </div>
+        <div class="d-flex justify-content-center my-5">
+            <button class="btn btn-success me-3" (click)="approve(userBill.id)">Εγκριση</button>
+            <button class="btn btn-danger" (click)="reject(userBill.id)">Απόρριψη</button>
+        </div>
+    </div>
+</div>
