@@ -180,8 +180,8 @@ namespace AppApi.Controllers
         private async Task<bool> UserExists(UserForRegisterDto userForRegister)
         {
             return ((await _userManager.Users.AnyAsync(user => user.UserName == userForRegister.Username))
-                && (await _userManager.Users.AnyAsync(user => user.Email == userForRegister.Email))
-                && (await _userManager.Users.AnyAsync(user => user.Afm == userForRegister.Afm)));
+                || (await _userManager.Users.AnyAsync(user => user.Email == userForRegister.Email))
+                || (await _userManager.Users.AnyAsync(user => user.Afm == userForRegister.Afm)));
         }
 
         private bool CheckIfInvalidUser(TaxisnetUserDto taxisnetUser, UserForRegisterDto userForRegister)
