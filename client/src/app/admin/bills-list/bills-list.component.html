@@ -11,7 +11,12 @@
     <h5 class="fst-italic fw-bold px-4"></h5>
 </div>
 
-<div class="row" *ngIf="pagedList.result && pagedList.result.length > 0">
+<div class="row" *ngIf="pagedList.result && pagedList.result.length > 0 && pagedList.pagination">
+    <app-paging-counter 
+        [totalItems]="pagedList.pagination.totalItems"
+        [currentPage]="pagedList.pagination.currentPage"
+        [itemsPerPage]="pagedList.pagination.itemsPerPage">
+    </app-paging-counter>
     <div class="col-md-11 mb-3 table-responsive">
         <table class="table table-striped table-hover">
             <thead class="thead-light">

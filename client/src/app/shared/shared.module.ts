@@ -16,6 +16,7 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
 import { ConfirmModalComponent } from './modals/confirm-modal/confirm-modal.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { EditBillModalComponent } from './modals/edit-bill-modal/edit-bill-modal.component';
+import { PagingCounterComponent } from './paging-counter/paging-counter.component';
 
 
 
@@ -28,6 +29,7 @@ import { EditBillModalComponent } from './modals/edit-bill-modal/edit-bill-modal
     DatePickerComponent,
     ConfirmModalComponent,
     EditBillModalComponent,
+    PagingCounterComponent,
   ],
   imports: [
     CommonModule,
@@ -59,6 +61,7 @@ import { EditBillModalComponent } from './modals/edit-bill-modal/edit-bill-modal
     NgxSpinnerModule,
     BsDatepickerModule,
     PagingComponent,
+    PagingCounterComponent,
     FormsSelectComponent,
     DatePickerComponent,
     ButtonsModule

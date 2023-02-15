@@ -1,0 +1,13 @@
+<div class="mb-3">
+    <span *ngIf="totalItems > 0 && currentPage && itemsPerPage">
+        Showing
+        <strong>
+            {{ (currentPage-1)*itemsPerPage+1}} - {{ currentPage*itemsPerPage > totalItems
+            ? totalItems
+            : currentPage*itemsPerPage }}
+        </strong>
+        of
+        <strong>{{ totalItems }}</strong>
+        results
+    </span>
+</div>
