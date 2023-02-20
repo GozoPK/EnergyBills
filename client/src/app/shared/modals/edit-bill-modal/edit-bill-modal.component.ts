@@ -28,6 +28,7 @@ export class EditBillModalComponent implements OnInit {
     private userBillsService: UserBillsService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.userBillsService.setErrorMessages(null);
     const month = Months[this.bill!.month as keyof typeof Months];
     let type;
 

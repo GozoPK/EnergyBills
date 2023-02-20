@@ -32,6 +32,7 @@ export class UserEditDetailsComponent implements OnInit, OnDestroy {
         }
       }
     })
+    this.accountService.setErrorMessages(null);
   }
 
   saveChanges() {

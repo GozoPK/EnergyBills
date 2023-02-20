@@ -28,6 +28,7 @@ export class AddBillComponent implements OnInit {
   constructor(private fb: FormBuilder, private userBillsService: UserBillsService, private modalService: ModalService) { }
 
   ngOnInit(): void {
+    this.userBillsService.setErrorMessages(null);
   }
 
   create() {

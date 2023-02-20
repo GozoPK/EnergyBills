@@ -21,6 +21,7 @@ export class UserEditSecurityComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder, private accountService: AccountService, private modalService: ModalService) { }
 
   ngOnInit(): void {
+    this.accountService.setErrorMessages(null);
     this.sub = this.changePasswordForm.controls['newPassword'].valueChanges.subscribe({
       next: () => this.changePasswordForm.controls['confirmPassword'].updateValueAndValidity()
     })
