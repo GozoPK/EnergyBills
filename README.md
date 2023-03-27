@@ -21,3 +21,7 @@ password: Password!1
 Admin credentials:
 username: admin
 password: Password!1
+
+Notes on the project:
+The client part is build in Angular 14
+The API is build with ASP.NET Core 6
