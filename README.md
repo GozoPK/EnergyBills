@@ -8,7 +8,7 @@ or log in to an already existing account.
 From that point he can submit the ID number of an energy bill along with further information in order for a voucher to be issued.
 He can also review his bill voucher history or edit personal info.
 
-There is also administrative funcionality and rights in order to approve a pending voucher request and/or create another admin user
+There is also administrative funcionality and rights in order to approve a pending voucher request and/or create another admin user.
 
 Login credenitals:
 username: petros
