@@ -37,7 +37,6 @@ namespace TaxisNetSimApi.Data.Migrations
                         .HasColumnType("varchar(9)");
 
                     b.Property<decimal>("AnnualIncome")
-                        .HasPrecision(13, 2)
                         .HasColumnType("decimal(13,2)");
 
                     b.Property<string>("City")

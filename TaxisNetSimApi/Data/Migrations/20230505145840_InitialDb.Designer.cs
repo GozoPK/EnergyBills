@@ -11,8 +11,8 @@ using TaxisNetSimApi.Data;
 namespace TaxisNetSimApi.Data.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20221210151229_DecimalFix")]
-    partial class DecimalFix
+    [Migration("20230505145840_InitialDb")]
+    partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,25 +27,40 @@ namespace TaxisNetSimApi.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("AddressNumber")
+                        .HasMaxLength(4)
+                        .HasColumnType("varchar(4)");
+
+                    b.Property<string>("AddressStreet")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Afm")
-                        .IsRequired()
                         .HasMaxLength(9)
                         .HasColumnType("varchar(9)");
-
-                    b.Property<string>("Amka")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar(11)");
 
                     b.Property<decimal>("AnnualIncome")
                         .HasColumnType("decimal(13,2)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
+                    b.Property<string>("City")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("longtext");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .HasColumnType("longblob");
+
+                    b.Property<string>("PostalCode")
+                        .HasMaxLength(5)
+                        .HasColumnType("varchar(5)");
+
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");

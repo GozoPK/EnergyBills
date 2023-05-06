@@ -1,41 +1,5 @@
 [
 	{
-	  "Month": 1,
-	  "Year": 2022,
-	  "Ammount": 62.00,
-	  "Type": 0
-	},
-	{
-	  "Month": 1,
-	  "Year": 2022,
-	  "Ammount": 55.00,
-	  "Type": 1
-	},
-	{
-	  "Month": 2,
-	  "Year": 2022,
-	  "Ammount": 62.00,
-	  "Type": 0
-	},
-	{
-	  "Month": 2,
-	  "Year": 2022,
-	  "Ammount": 55.00,
-	  "Type": 1
-	},
-	{
-	  "Month": 3,
-	  "Year": 2022,
-	  "Ammount": 62.00,
-	  "Type": 0
-	},
-	{
-	  "Month": 3,
-	  "Year": 2022,
-	  "Ammount": 55.00,
-	  "Type": 1
-	},
-	{
 	  "Month": 4,
 	  "Year": 2022,
 	  "Ammount": 62.00,
@@ -135,7 +99,7 @@
 	  "Month": 12,
 	  "Year": 2022,
 	  "Ammount": 62.00,
-	  "Type": 0	
+	  "Type": 0
 	},
 	{
 	  "Month": 12,
@@ -147,10 +111,46 @@
 	  "Month": 1,
 	  "Year": 2023,
 	  "Ammount": 62.00,
-	  "Type": 0	
+	  "Type": 0
 	},
 	{
 	  "Month": 1,
+	  "Year": 2023,
+	  "Ammount": 55.00,
+	  "Type": 1
+	},
+	{
+	  "Month": 2,
+	  "Year": 2023,
+	  "Ammount": 62.00,
+	  "Type": 0
+	},
+	{
+	  "Month": 2,
+	  "Year": 2023,
+	  "Ammount": 55.00,
+	  "Type": 1
+	},
+	{
+	  "Month": 3,
+	  "Year": 2023,
+	  "Ammount": 62.00,
+	  "Type": 0	
+	},
+	{
+	  "Month": 3,
+	  "Year": 2023,
+	  "Ammount": 55.00,
+	  "Type": 1
+	},
+	{
+	  "Month": 4,
+	  "Year": 2023,
+	  "Ammount": 62.00,
+	  "Type": 0	
+	},
+	{
+	  "Month": 4,
 	  "Year": 2023,
 	  "Ammount": 55.00,
 	  "Type": 1

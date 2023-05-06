@@ -29,9 +29,15 @@ namespace AppApi.Extensions
                 };
             });
 
+            // Local Version of MariaDB
+            // services.AddDbContextPool<DataContext>(options => 
+            //     options.UseMySql(config.GetConnectionString("MariaDbConnection"),
+            //         new MariaDbServerVersion(new Version(10,6,11))));
+            
+            // Docker Version of MariaDB
             services.AddDbContextPool<DataContext>(options => 
                 options.UseMySql(config.GetConnectionString("MariaDbConnection"),
-                    new MariaDbServerVersion(new Version(10,6,11))));
+                    new MariaDbServerVersion(new Version(10,11,2))));
 
             services.AddCors();
             services.AddHttpClient();

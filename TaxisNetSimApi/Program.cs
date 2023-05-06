@@ -11,9 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+// Local Version of MariaDB
+// builder.Services.AddDbContextPool<UserContext>(options => 
+//     options.UseMySql(builder.Configuration.GetConnectionString("MariaDbConnection"),
+//         new MariaDbServerVersion(new Version(10,6,11))));
+
+// Docker Version of MariaDB
 builder.Services.AddDbContextPool<UserContext>(options => 
     options.UseMySql(builder.Configuration.GetConnectionString("MariaDbConnection"),
-        new MariaDbServerVersion(new Version(10,6,11))));
+        new MariaDbServerVersion(new Version(10,11,2))));
 
 builder.Services.AddAuthentication()
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>

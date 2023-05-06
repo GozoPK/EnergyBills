@@ -17,7 +17,7 @@ namespace TaxisNetSimApi.Data
 
             modelBuilder.Entity<TaxisNetUserEntity>()
                 .Property(p => p.AnnualIncome)
-                .HasPrecision(13, 2);
+                .HasColumnType("decimal(13,2)");
         }
     }
 }
