@@ -14,3 +14,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
 ENTRYPOINT [ "dotnet", "TaxisNetSimApi.dll" ]
+
+# docker build -t gozopk/taxisnetsim .
+# docker run -it -p {{ip address}}:5003:80 --name taxisnetsim gozopk/taxisnetsim

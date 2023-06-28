@@ -11,12 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-// Local Version of MariaDB
-// builder.Services.AddDbContextPool<UserContext>(options => 
-//     options.UseMySql(builder.Configuration.GetConnectionString("MariaDbConnection"),
-//         new MariaDbServerVersion(new Version(10,6,11))));
-
-// Docker Version of MariaDB
+// MariaDB Connection Configuration
 builder.Services.AddDbContextPool<UserContext>(options => 
     options.UseMySql(builder.Configuration.GetConnectionString("MariaDbConnection"),
         new MariaDbServerVersion(new Version(10,11,2))));

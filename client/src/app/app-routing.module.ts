@@ -10,12 +10,13 @@ import { IsMemberGuard } from './guards/is-member.guard';
 import { TaxisRegistered } from './guards/taxis-registered.guard';
 import { HomeComponent } from './intro/home/home.component';
 import { IntroComponent } from './intro/intro.component';
+import { ExitRegisterGuard } from './guards/exit-register.guard';
 
 const routes: Routes = [
   { path: '', component: IntroComponent, 
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'register', component: RegisterComponent, canActivate: [TaxisRegistered] },
+      { path: 'register', component: RegisterComponent, canActivate: [TaxisRegistered], canDeactivate: [ExitRegisterGuard] },
       { 
         path: 'energy-bills', 
         loadChildren: () => import('./energy-bills/energy-bills.module').then(m => m.EnergyBillsModule),
