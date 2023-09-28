@@ -13,7 +13,7 @@ export class ExitRegisterGuard implements CanDeactivate<unknown> {
 
   canDeactivate(component: RegisterComponent): Observable<boolean> {
     const token = localStorage.getItem('token');
-    if (component.registerForm.dirty) {
+    if (component.registerForm.dirty && !component.isSuccesfulRegister) {
       return this.modalService.openConfirmModal('Είστε σίγουρος ότι θέλετε να αποχωρήσετε;')
         .pipe(tap(response => {
           if (response) {
@@ -21,7 +21,7 @@ export class ExitRegisterGuard implements CanDeactivate<unknown> {
           }
         }));
     }
-    if (token) {
+    if (token && !component.isSuccesfulRegister) {
       localStorage.removeItem('token');
     }
     return of(true);

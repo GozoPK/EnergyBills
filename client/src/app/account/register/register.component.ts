@@ -14,6 +14,7 @@ import { ModalService } from 'src/app/services/modal.service';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});
   user: TaxisnetUser | undefined;
+  isSuccesfulRegister: boolean = false;
 
   errorMessages$ = this.accountService.errorMessages$;
   
@@ -22,6 +23,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.accountService.user;
+    this.accountService.setErrorMessages(null);
     this.initializeForm();
   }
 
@@ -59,6 +61,7 @@ export class RegisterComponent implements OnInit {
 
     this.accountService.register(model).subscribe({
       next: () => {
+        this.isSuccesfulRegister = true;
         this.modalService.openRegisterModal('Επιτυχής εγγραφή');
       }
     });
